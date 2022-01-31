@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
 import YouTube from "./svg/YouTube.vue";
 import Twitter from "./svg/Twitter.vue";
 import Instagram from "./svg/Instagram.vue";
@@ -56,13 +58,16 @@ export default {
     Instagram,
     Linkedin,
   },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    },
-    admin() {
-      return this.$store.state.profileAdmin;
-    },
+  setup() {
+    const store = useStore();
+    const user = computed(() => {
+      return store.state.user;
+    });
+    const admin = computed(() => {
+      return store.state.profileAdmin;
+    });
+
+    return { user, admin };
   },
 };
 </script>
@@ -73,7 +78,7 @@ footer {
   padding: 100px 25px;
   background-color: #303030;
 }
-footer.container {
+footer .container {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -82,7 +87,7 @@ footer.container {
     gap: 0px;
   }
 }
-footer.container div {
+footer .container > div {
   display: flex;
   flex: 1;
 }
@@ -98,7 +103,7 @@ footer.container div {
     gap: 0;
   }
 }
-.left .header {
+.header {
   text-align: center;
   font-size: 24px;
   color: #fff;
@@ -109,7 +114,7 @@ footer.container div {
     text-align: initial;
   }
 }
-.left .header ul {
+.header ul {
   gap: 16px;
   list-style: none;
   display: flex;
@@ -135,7 +140,7 @@ footer.container div {
 .col-1 ul {
   margin-top: auto;
 }
-.col-1 li {
+.col-1 ul li {
   display: flex;
   align-items: center;
 }
