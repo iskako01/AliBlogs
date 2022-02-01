@@ -10,7 +10,7 @@
       <div class="container">
         <h3>View More Recent Blogs</h3>
         <div class="blog-cards">
-          <blog-post
+          <blog-card
             :post="post"
             v-for="(post, index) in blogPostsCards"
             :key="index"
@@ -33,10 +33,11 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import BlogPost from "../components/BlogPost.vue";
+import BlogCard from "../components/BlogCard.vue";
 
 export default {
   name: "Home",
-  components: { BlogPost },
+  components: { BlogPost, BlogCard },
   setup() {
     const store = useStore();
     const welcomeScreen = ref({
@@ -95,6 +96,18 @@ export default {
   text-decoration: none;
   @media (min-width: 800px) {
     margin-left: auto;
+  }
+}
+h2 {
+  font-weight: 300;
+  font-size: 32px;
+  max-width: 425px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  @media (min-width: 800px) {
+    text-align: initial;
+    font-size: 40px;
   }
 }
 </style>

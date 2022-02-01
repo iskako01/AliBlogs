@@ -13,7 +13,7 @@
           :to="{ name: '' }"
           >Login/Register<Arrow class="arrow arrow-light"
         /></router-link>
-        <router-link class="link link-light" v-else :to="{ name: '' }"
+        <router-link class="link" v-else :to="{ name: '' }"
           >View The Post<Arrow class="arrow"
         /></router-link>
       </div>
@@ -47,12 +47,6 @@ export default {
 </script>
 
 <style scoped>
-.arrow {
-  color: #000000;
-}
-.arrow-light {
-  color: #000000;
-}
 .blog-wrapper {
   display: flex;
   flex-direction: column;
@@ -141,16 +135,30 @@ export default {
   object-fit: cover;
 }
 
-.blog-photo:nth-child(even).blog-content {
+.blog-photo:nth-child(even) .blog-content {
   order: 2;
 }
 
-.blog-photo:nth-child(even).blog-photo {
+.blog-photo:nth-child(even) .blog-photo {
   order: 1;
 }
 
-.no-user:first-child.blog-content {
+.no-user:first-child .blog-content {
   background-color: #303030;
   color: #fff;
+}
+.arrow {
+  margin-left: 8px;
+  width: 12px;
+}
+.arrow path {
+  fill: #000;
+}
+/* .arrow-light {
+  margin-left: 8px;
+  width: 12px;
+} */
+.arrow-light path {
+  fill: #fff;
 }
 </style>
