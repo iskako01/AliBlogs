@@ -1,6 +1,6 @@
 <template>
   <div class="blog-card">
-    <div class="icons">
+    <div v-show="editPost" class="icons">
       <div class="icon">
         <Edit class="icon" />
       </div>
@@ -20,7 +20,8 @@
 </template>
 
 <script>
-// import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 import Arrow from "./svg/Arrow.vue";
 import Edit from "./svg/Edit.vue";
 import Delete from "./svg/Delete.vue";
@@ -35,7 +36,13 @@ export default {
     },
   },
   setup() {
-    return {};
+    const store = useStore();
+
+    const editPost = computed(() => {
+      return store.state.editPost;
+    });
+
+    return { editPost };
   },
 };
 </script>

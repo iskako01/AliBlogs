@@ -12,7 +12,7 @@
         <div class="blog-cards">
           <blog-card
             :post="post"
-            v-for="(post, index) in blogPostsCards"
+            v-for="(post, index) in sampleBlogCards"
             :key="index"
           />
         </div>
@@ -34,10 +34,11 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import BlogPost from "../components/BlogPost.vue";
 import BlogCard from "../components/BlogCard.vue";
+import Arrow from "../components/svg/Arrow.vue";
 
 export default {
   name: "Home",
-  components: { BlogPost, BlogCard },
+  components: { BlogPost, BlogCard, Arrow },
   setup() {
     const store = useStore();
     const welcomeScreen = ref({
@@ -51,13 +52,22 @@ export default {
     const blogPostsFeed = computed(() => {
       return store.state;
     });
+    const sampleBlogCards = computed(() => {
+      return store.state.sampleBlogCards;
+    });
     const blogPostsCards = computed(() => {
       return store.state;
     });
     const user = computed(() => {
       return store.state.user;
     });
-    return { welcomeScreen, blogPostsFeed, blogPostsCards, user };
+    return {
+      welcomeScreen,
+      blogPostsFeed,
+      blogPostsCards,
+      user,
+      sampleBlogCards,
+    };
   },
 };
 </script>
@@ -80,7 +90,7 @@ export default {
     font-size: 40px;
   }
 }
-.container {
+.updates .container {
   padding: 100px 25px;
   display: flex;
   flex-direction: column;
@@ -94,11 +104,12 @@ export default {
   display: flex;
   font-size: 14px;
   text-decoration: none;
+  cursor: pointer;
   @media (min-width: 800px) {
     margin-left: auto;
   }
 }
-h2 {
+.updates .container h2 {
   font-weight: 300;
   font-size: 32px;
   max-width: 425px;

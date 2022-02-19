@@ -1,27 +1,37 @@
 <template>
   <div class="form-wrap">
-    <form class="login">
+    <form class="register">
       <p class="login-register">
-        Don't have an account?
-        <router-link class="router-link" :to="{ name: 'Register' }"
-          >Register</router-link
+        Already have an account?
+        <router-link class="router-link" :to="{ name: 'Login' }"
+          >Login</router-link
         >
       </p>
-      <h2>Login to AliBlogs</h2>
+      <h2>Create Your AliBlogs Account</h2>
       <div class="inputs">
         <div class="input">
+          <input type="text" placeholder="First Name" v-model="firstName" />
+          <user class="icon" />
+        </div>
+        <div class="input">
+          <input type="text" placeholder="Last Name" v-model="lastName" />
+          <user class="icon" />
+        </div>
+        <div class="input">
+          <input type="text" placeholder="Username" v-model="username" />
+          <user class="icon" />
+        </div>
+        <div class="input">
           <input type="email" placeholder="Email" v-model="email" />
-          <Email class="icon" />
+          <email class="icon" />
         </div>
         <div class="input">
           <input type="password" placeholder="Password" v-model="password" />
-          <Password class="icon" />
+          <password class="icon" />
         </div>
+        <div v-show="error" class="error">{{ this.errorMsg }}</div>
       </div>
-      <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }"
-        >Forgot your password?</router-link
-      >
-      <button>Sign in</button>
+      <button @click.prevent="register">Sign Up</button>
       <div class="angle"></div>
     </form>
     <div class="background"></div>
@@ -32,19 +42,23 @@
 import { ref } from "vue";
 import Email from "../components/svg/Email.vue";
 import Password from "../components/svg/Password.vue";
+import User from "../components/svg/User.vue";
 export default {
-  name: "Login",
-  components: { Email, Password },
+  name: "Register",
+  components: { Email, Password, User },
   setup() {
+    const firstName = ref(null);
+    const lastName = ref(null);
+    const username = ref(null);
     const email = ref(null);
     const password = ref(null);
 
-    return { email, password };
+    return { firstName, lastName, username, email, password };
   },
 };
 </script>
 
-<style>
+<style scoped>
 .form-wrap {
   overflow: hidden;
   display: flex;
@@ -56,12 +70,6 @@ export default {
   @media (min-width: 900px) {
     width: 100%;
   }
-}
-.login-register {
-  margin-bottom: 32px;
-}
-.login-register .router-link {
-  color: #000;
 }
 form {
   padding: 0 10px;
@@ -88,17 +96,8 @@ h2 {
   width: 100%;
   max-width: 350px;
 }
-.forgot-password {
-  text-decoration: none;
-  color: #000;
-  cursor: pointer;
-  font-size: 14px;
-  margin: 16px 0 32px;
-  border-bottom: 1px solid transparent;
-  transition: 0.5s ease all;
-}
-.forgot-password:hover {
-  border-color: #303030;
+.register h2 {
+  max-width: 350px;
 }
 .input {
   position: relative;

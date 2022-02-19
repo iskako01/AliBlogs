@@ -1,15 +1,39 @@
 <template>
-  <Navigation />
+  <Navigation v-if="!routerNavigation" />
   <router-view />
-  <blogs-footer />
+  <blogs-footer v-if="!routerNavigation" />
 </template>
 
 <script>
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import Navigation from "./components/Navigation.vue";
 import BlogsFooter from "./components/BlogsFooter.vue";
 export default {
   components: { Navigation, BlogsFooter },
-  setup() {},
+  setup() {
+    const route = useRoute();
+    const routerNavigation = ref(null);
+
+    const checkRoute = () => {
+      if (
+        route.name === "Login" ||
+        route.name === "Register" ||
+        route.name === "ForgotPassword"
+      ) {
+        routerNavigation.value = true;
+        return;
+      }
+      routerNavigation.value = false;
+    };
+    checkRoute();
+
+    watch((route) => {
+      checkRoute();
+    });
+
+    return { routerNavigation };
+  },
 };
 </script>
 

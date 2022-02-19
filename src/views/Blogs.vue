@@ -1,9 +1,98 @@
 <template>
-  <div class=""></div>
+  <div class="blog-card-wrap">
+    <div class="blog-cards container">
+      <div class="toggle-edit">
+        <span>Toggle Editing Post</span>
+        <input type="checkbox" v-model="editPost" />
+      </div>
+      <blog-card
+        :post="post"
+        v-for="(post, index) in sampleBlogCards"
+        :key="index"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
-export default {};
+import { ref, computed, watch, onBeforeUnmount } from "vue";
+import { useStore } from "vuex";
+
+import BlogCard from "../components/BlogCard.vue";
+export default {
+  components: { BlogCard },
+  setup() {
+    const store = useStore();
+    const editPost = ref(false);
+
+    console.log(editPost.value);
+
+    const sampleBlogCards = computed(() => {
+      return store.state.sampleBlogCards;
+    });
+
+    const toggleEditPost = () => {
+      store.commit("toggleEditPost", editPost.value);
+    };
+    // const editPost = computed(() => {
+    //   return store.state.editPost;
+    // });
+
+    onBeforeUnmount(() => {
+      store.commit("toggleEditPost", false);
+    });
+
+    watch(editPost, (currentValue, oldValue) => {
+      toggleEditPost();
+    });
+
+    return { editPost, sampleBlogCards };
+  },
+};
 </script>
 
-<style></style>
+<style scoped>
+.blog-cards {
+  position: relative;
+}
+.toggle-edit {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: -70px;
+  right: 0;
+}
+span {
+  margin-right: 16px;
+}
+input[type="checkbox"] {
+  position: relative;
+  border: none;
+  -webkit-appearance: none;
+  background: #fff;
+  outline: none;
+  width: 80px;
+  height: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+input[type="checkbox"]:before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  top: 0;
+  left: 0;
+  background: #303030;
+  transform: scale(1.1);
+  transition: 750ms ease all;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+input:checked[type="checkbox"]:before {
+  background: #fff;
+  left: 52px;
+}
+</style>

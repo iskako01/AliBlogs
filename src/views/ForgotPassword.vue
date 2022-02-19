@@ -1,50 +1,55 @@
 <template>
-  <div class="form-wrap">
-    <form class="login">
-      <p class="login-register">
-        Don't have an account?
-        <router-link class="router-link" :to="{ name: 'Register' }"
-          >Register</router-link
-        >
-      </p>
-      <h2>Login to AliBlogs</h2>
-      <div class="inputs">
-        <div class="input">
-          <input type="email" placeholder="Email" v-model="email" />
-          <Email class="icon" />
+  <div class="reset-password">
+    <Loading v-if="loading" />
+    <div class="form-wrap">
+      <form class="reset">
+        <p class="login-register">
+          Back to
+          <router-link class="router-link" :to="{ name: 'Login' }"
+            >Login</router-link
+          >
+        </p>
+        <h2>Reset Password</h2>
+        <p>Forgot your passowrd? Enter your email to reset it</p>
+        <div class="inputs">
+          <div class="input">
+            <input type="text" placeholder="Email" v-model="email" />
+            <email class="icon" />
+          </div>
         </div>
-        <div class="input">
-          <input type="password" placeholder="Password" v-model="password" />
-          <Password class="icon" />
-        </div>
-      </div>
-      <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }"
-        >Forgot your password?</router-link
-      >
-      <button>Sign in</button>
-      <div class="angle"></div>
-    </form>
-    <div class="background"></div>
+        <button @click.prevent="resetPassword">Reset</button>
+        <div class="angle"></div>
+      </form>
+      <div class="background"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import Email from "../components/svg/Email.vue";
-import Password from "../components/svg/Password.vue";
 export default {
-  name: "Login",
-  components: { Email, Password },
+  name: "ForgotPassword",
+  components: { Email },
   setup() {
     const email = ref(null);
-    const password = ref(null);
 
-    return { email, password };
+    return { email };
   },
 };
 </script>
 
 <style>
+.reset-password {
+  position: relative;
+}
+.form-wrap .reset h2 {
+  margin-bottom: 8px;
+}
+p {
+  text-align: center;
+  margin-bottom: 32px;
+}
 .form-wrap {
   overflow: hidden;
   display: flex;
@@ -56,12 +61,6 @@ export default {
   @media (min-width: 900px) {
     width: 100%;
   }
-}
-.login-register {
-  margin-bottom: 32px;
-}
-.login-register .router-link {
-  color: #000;
 }
 form {
   padding: 0 10px;
@@ -88,17 +87,8 @@ h2 {
   width: 100%;
   max-width: 350px;
 }
-.forgot-password {
-  text-decoration: none;
-  color: #000;
-  cursor: pointer;
-  font-size: 14px;
-  margin: 16px 0 32px;
-  border-bottom: 1px solid transparent;
-  transition: 0.5s ease all;
-}
-.forgot-password:hover {
-  border-color: #303030;
+.register h2 {
+  max-width: 350px;
 }
 .input {
   position: relative;

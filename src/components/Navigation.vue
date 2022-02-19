@@ -8,10 +8,12 @@
       </div>
       <div class="nav-links">
         <ul v-show="!mobile">
-          <router-link :to="{ name: '' }" class="link">Home</router-link>
-          <router-link :to="{ name: '' }" class="link">Blogs</router-link>
-          <router-link :to="{ name: '' }" class="link">Create Post</router-link>
-          <router-link :to="{ name: '' }" class="link"
+          <router-link :to="{ name: 'Home' }" class="link">Home</router-link>
+          <router-link :to="{ name: 'Blogs' }" class="link">Blogs</router-link>
+          <router-link :to="{ name: 'CreatePost' }" class="link"
+            >Create Post</router-link
+          >
+          <router-link :to="{ name: 'Login' }" class="link"
             >Login/Register</router-link
           >
         </ul>
@@ -22,10 +24,12 @@
 
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
-        <router-link :to="{ name: '' }" class="link">Home</router-link>
-        <router-link :to="{ name: '' }" class="link">Blogs</router-link>
-        <router-link :to="{ name: '' }" class="link">Create Post</router-link>
-        <router-link :to="{ name: '' }" class="link"
+        <router-link :to="{ name: 'Home' }" class="link">Home</router-link>
+        <router-link :to="{ name: 'Blogs' }" class="link">Blogs</router-link>
+        <router-link :to="{ name: 'CreatePost' }" class="link"
+          >Create Post</router-link
+        >
+        <router-link :to="{ name: 'Login' }" class="link"
           >Login/Register</router-link
         >
       </ul>
