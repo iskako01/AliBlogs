@@ -7,13 +7,25 @@
 <script>
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+import { auth } from "./firebase/firebase";
 import Navigation from "./components/Navigation.vue";
 import BlogsFooter from "./components/BlogsFooter.vue";
+
 export default {
   components: { Navigation, BlogsFooter },
   setup() {
     const route = useRoute();
+    const store = useStore();
     const routerNavigation = ref(null);
+
+    auth.onAuthStateChanged((user) => {
+      store.commit("updateUser", user);
+      if (user) {
+        store.dispatch("getCurrentUser");
+        console.log(store.state.profileEmail);
+      }
+    });
 
     const checkRoute = () => {
       if (

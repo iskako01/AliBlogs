@@ -17,11 +17,13 @@
           <input type="password" placeholder="Password" v-model="password" />
           <Password class="icon" />
         </div>
+        <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
       <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }"
         >Forgot your password?</router-link
       >
-      <button>Sign in</button>
+
+      <button @click.prevent="signIn">Sign in</button>
       <div class="angle"></div>
     </form>
     <div class="background"></div>
@@ -30,16 +32,37 @@
 
 <script>
 import { ref } from "vue";
+import { auth } from "../firebase/firebase";
+import { useRouter } from "vue-router";
 import Email from "../components/svg/Email.vue";
 import Password from "../components/svg/Password.vue";
+
 export default {
   name: "Login",
   components: { Email, Password },
   setup() {
-    const email = ref(null);
-    const password = ref(null);
+    const router = useRouter();
 
-    return { email, password };
+    const email = ref("");
+    const password = ref("");
+    const error = ref(false);
+    const errorMsg = ref("");
+
+    const signIn = () => {
+      auth
+        .signInWithEmailAndPassword(email.value, password.value)
+        .then(() => {
+          router.push({ name: "Home" });
+          error.value = false;
+          errorMsg.value = "";
+        })
+        .catch((err) => {
+          error.value = true;
+          errorMsg.value = err;
+        });
+    };
+
+    return { email, password, errorMsg, error, signIn };
   },
 };
 </script>
