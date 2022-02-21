@@ -49,6 +49,15 @@ export default createStore({
     updateUser(state, payload) {
       state.user = payload;
     },
+    changeFirstName(state, payload) {
+      state.profileFirstName = payload;
+    },
+    changeLastName(state, payload) {
+      state.profileLastName = payload;
+    },
+    changeUsername(state, payload) {
+      state.profileUsername = payload;
+    },
     setProfileInfo(state, doc) {
       state.profileId = doc.id;
       state.profileEmail = doc.data().email;
@@ -69,6 +78,15 @@ export default createStore({
       commit("setProfileInfo", dbResult);
       commit("setProfileInitials");
       console.log(dbResult);
+    },
+    async updateUserSettings({ commit, state }) {
+      const dataBase = await db.collection("users").doc(state.profileId);
+      await dataBase.update({
+        firstName: state.profileFirstName,
+        lastName: state.profileLastName,
+        username: state.profileUsername,
+      });
+      commit("setProfileInitials");
     },
   },
   modules: {},

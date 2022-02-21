@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <blog-post :post="welcomeScreen" />
+    <blog-post v-if="!user" :post="welcomeScreen" />
     <blog-post
       :post="post"
       v-for="(post, index) in blogPostsFeed"

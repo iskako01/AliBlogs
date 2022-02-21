@@ -64,6 +64,24 @@ const routes = [
       auth: false,
     },
   },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: () => import("../views/Admin.vue"),
+    meta: {
+      title: "Admin",
+      auth: false,
+    },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () => import("../views/Profile.vue"),
+    meta: {
+      title: "Profile",
+      auth: false,
+    },
+  },
 ];
 
 const router = createRouter({

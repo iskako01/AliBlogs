@@ -13,10 +13,43 @@
           <router-link :to="{ name: 'CreatePost' }" class="link"
             >Create Post</router-link
           >
-          <router-link :to="{ name: 'Login' }" class="link"
+          <router-link v-if="!user" :to="{ name: 'Login' }" class="link"
             >Login/Register</router-link
           >
         </ul>
+        <div v-if="user" class="profile" @click="toggleProfileMenu">
+          <span>{{ profileInitials }}</span>
+
+          <div v-show="profileMenu" @click.stop class="profile-menu">
+            <div class="info">
+              <p class="initials">{{ profileInitials }}</p>
+              <div class="right">
+                <p>{{ profileFirstName }}</p>
+                <p>{{ profileLastName }}</p>
+                <p>{{ profileUsername }}</p>
+                <p>{{ profileEmail }}</p>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <router-link class="option" :to="{ name: 'Profile' }">
+                  <user-icon class="icon" />
+                  <p>Profile</p>
+                </router-link>
+              </div>
+              <div class="option">
+                <router-link class="option" :to="{ name: 'Admin' }">
+                  <admin-icon class="icon" />
+                  <p>Admin</p>
+                </router-link>
+              </div>
+              <div class="option" @click="signOut">
+                <sign-out-icon class="icon" />
+                <p>Sign Out</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
 
@@ -29,7 +62,7 @@
         <router-link :to="{ name: 'CreatePost' }" class="link"
           >Create Post</router-link
         >
-        <router-link :to="{ name: 'Login' }" class="link"
+        <router-link v-if="!user" :to="{ name: 'Login' }" class="link"
           >Login/Register</router-link
         >
       </ul>
@@ -38,15 +71,42 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+import { useStore } from "vuex";
+import { auth } from "../firebase/firebase";
 import BarsRegular from "../components/svg/BarsRegular.vue";
+import UserIcon from "../components/svg/UserIcon.vue";
+import AdminIcon from "../components/svg/AdminIcon.vue";
+import SignOutIcon from "../components/svg/SignOutIcon.vue";
 export default {
   name: "navigation",
-  components: { BarsRegular },
+  components: { BarsRegular, UserIcon, AdminIcon, SignOutIcon },
   setup() {
+    const store = useStore();
+
     const mobile = ref(null);
+    const profileMenu = ref(false);
     const mobileNav = ref(null);
     const windowWidth = ref(null);
+
+    const profileInitials = computed(() => {
+      return store.state.profileInitials;
+    });
+    const profileFirstName = computed(() => {
+      return store.state.profileFirstName;
+    });
+    const profileLastName = computed(() => {
+      return store.state.profileLastName;
+    });
+    const profileUsername = computed(() => {
+      return store.state.profileUsername;
+    });
+    const profileEmail = computed(() => {
+      return store.state.profileEmail;
+    });
+    const user = computed(() => {
+      return store.state.user;
+    });
 
     const checkScreen = () => {
       windowWidth.value = window.innerWidth;
@@ -61,6 +121,13 @@ export default {
     const toggleMobileNav = () => {
       mobileNav.value = !mobileNav.value;
     };
+    const toggleProfileMenu = () => {
+      profileMenu.value = !profileMenu.value;
+    };
+    const signOut = () => {
+      auth.signOut();
+      window.location.reload();
+    };
 
     onMounted(() => {
       window.addEventListener("resize", () => checkScreen());
@@ -69,7 +136,22 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener("resize", checkScreen());
     });
-    return { mobile, mobileNav, windowWidth, checkScreen, toggleMobileNav };
+    return {
+      mobile,
+      mobileNav,
+      windowWidth,
+      checkScreen,
+      user,
+      toggleMobileNav,
+      toggleProfileMenu,
+      profileInitials,
+      profileFirstName,
+      profileLastName,
+      profileUsername,
+      profileEmail,
+      profileMenu,
+      signOut,
+    };
   },
 };
 </script>
@@ -148,7 +230,7 @@ span {
 .info {
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 10px;
   border-bottom: 1px solid #fff;
 }
 .initials {

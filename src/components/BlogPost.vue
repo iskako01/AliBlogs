@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-wrapper">
+  <div class="blog-wrapper" :class="{ 'no-user': !user }">
     <div class="blog-content">
       <div>
         <h2 v-if="post.welcomeScreen">{{ post.title }}</h2>
@@ -28,7 +28,8 @@
 </template>
 
 <script>
-// import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 import Arrow from "./svg/Arrow.vue";
 
 export default {
@@ -41,7 +42,12 @@ export default {
     },
   },
   setup() {
-    return {};
+    const store = useStore();
+
+    const user = computed(() => {
+      return store.state.user;
+    });
+    return { user };
   },
 };
 </script>
