@@ -82,6 +82,15 @@ const routes = [
       auth: false,
     },
   },
+  {
+    path: "/blog-preview",
+    name: "BlogPreview",
+    component: () => import("../views/BlogPreview.vue"),
+    meta: {
+      title: "Blog Preview",
+      auth: false,
+    },
+  },
 ];
 
 const router = createRouter({

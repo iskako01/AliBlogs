@@ -12,7 +12,7 @@
             v-model="adminEmail"
           />
         </div>
-        <span>{{ this.functionMsg }}</span>
+        <span>{{ functionMsg }}</span>
         <button @click="addAdmin" class="button">Submit</button>
       </div>
     </div>
@@ -20,7 +20,15 @@
 </template>
 
 <script>
-export default {};
+import { ref } from "vue";
+export default {
+  name: "Admin",
+  setup() {
+    const adminEmail = ref("");
+    const functionMsg = ref(null);
+    return { adminEmail, functionMsg };
+  },
+};
 </script>
 
 <style scoped>

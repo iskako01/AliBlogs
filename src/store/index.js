@@ -43,6 +43,21 @@ export default createStore({
     ],
   },
   mutations: {
+    openPhotoPreview(state) {
+      state.blogPhotoPreview = !state.blogPhotoPreview;
+    },
+    fileNameChange(state, payload) {
+      state.blogPhotoName = payload;
+    },
+    createFileURL(state, payload) {
+      state.blogPhotoFileURL = payload;
+    },
+    newBlogPost(state, payload) {
+      state.blogHTML = payload;
+    },
+    updateBlogTitle(state, payload) {
+      state.blogTitle = payload;
+    },
     toggleEditPost(state, payload) {
       state.editPost = payload;
     },
@@ -77,7 +92,6 @@ export default createStore({
       const dbResult = await dataBase.get();
       commit("setProfileInfo", dbResult);
       commit("setProfileInitials");
-      console.log(dbResult);
     },
     async updateUserSettings({ commit, state }) {
       const dataBase = await db.collection("users").doc(state.profileId);

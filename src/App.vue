@@ -23,7 +23,6 @@ export default {
       store.commit("updateUser", user);
       if (user) {
         store.dispatch("getCurrentUser");
-        console.log(store.state.profileEmail);
       }
     });
 
