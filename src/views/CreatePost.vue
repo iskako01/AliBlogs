@@ -28,11 +28,10 @@
         </div>
       </div>
       <div class="editor">
-        <vue-editor
-          :editorOptions="editorSettings"
-          v-model="blogHTML"
-          useCustomImageHandler
-          @image-added="imageHandler"
+        <QuillEditor
+          theme="snow"
+          v-model:content="blogHTML"
+          contentType="html"
         />
       </div>
       <div class="blog-actions">
@@ -50,13 +49,12 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import Loading from "../components/Loading.vue";
 import BlogCoverPreview from "../components/BlogCoverPreview.vue";
-import Quill from "quill";
-window.Quill = Quill;
-const ImageResize = require("quill-image-resize-module").default;
-Quill.register("modules/imageResize", ImageResize);
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+
 export default {
   name: "CreatePost",
-  components: { Loading, BlogCoverPreview },
+  components: { Loading, BlogCoverPreview, QuillEditor },
   setup() {
     const store = useStore();
 
