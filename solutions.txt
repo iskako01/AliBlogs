@@ -1,2 +1,3 @@
 https://vueup.github.io/vue-quill/guide/usage.html)
 https://medium.com/codingthesmartway-com-blog/introduction-to-firebase-cloud-functions-c220613f0ef
+https://firebase.google.com/docs/functions/get-started
