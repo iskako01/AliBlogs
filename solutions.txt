@@ -1,2 +1,5 @@
 https://vueup.github.io/vue-quill/guide/usage.html)
 https://medium.com/codingthesmartway-com-blog/introduction-to-firebase-cloud-functions-c220613f0ef
+https://firebase.google.com/docs/functions/get-started
+
+Provide to <QuillEditor> a prop called toolbar (ex. toolbar='minimal'). vue-quill is creating options for Quill and only when toolbar prop is present it creates an object key modules that it uses to register other modules.
