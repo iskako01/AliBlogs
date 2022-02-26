@@ -7,7 +7,6 @@ const routes = [
     component: () => import("../views/Home.vue"),
     meta: {
       title: "Home",
-      auth: false,
     },
   },
   {
@@ -16,7 +15,6 @@ const routes = [
     component: () => import("../views/Blogs.vue"),
     meta: {
       title: "Blogs",
-      auth: false,
     },
   },
   {
@@ -25,7 +23,6 @@ const routes = [
     component: () => import("../views/BlogsView.vue"),
     meta: {
       title: "Blogs View",
-      auth: false,
     },
   },
   {
@@ -34,7 +31,6 @@ const routes = [
     component: () => import("../views/CreatePost.vue"),
     meta: {
       title: "Create Post",
-      auth: false,
     },
   },
   {
@@ -43,7 +39,6 @@ const routes = [
     component: () => import("../views/Login.vue"),
     meta: {
       title: "Login",
-      auth: false,
     },
   },
   {
@@ -52,7 +47,6 @@ const routes = [
     component: () => import("../views/Register.vue"),
     meta: {
       title: "Register",
-      auth: false,
     },
   },
   {
@@ -61,7 +55,6 @@ const routes = [
     component: () => import("../views/ForgotPassword.vue"),
     meta: {
       title: "Forgot Password",
-      auth: false,
     },
   },
   {
@@ -70,7 +63,6 @@ const routes = [
     component: () => import("../views/Admin.vue"),
     meta: {
       title: "Admin",
-      auth: false,
     },
   },
   {
@@ -79,7 +71,6 @@ const routes = [
     component: () => import("../views/Profile.vue"),
     meta: {
       title: "Profile",
-      auth: false,
     },
   },
   {
@@ -88,7 +79,6 @@ const routes = [
     component: () => import("../views/BlogPreview.vue"),
     meta: {
       title: "Blog Preview",
-      auth: false,
     },
   },
 ];
