@@ -37,9 +37,9 @@
         />
       </div>
       <div class="blog-actions">
-        <button @click="uploadBlog">Publish Blog</button>
+        <button @click="updateBlog">Save Changes</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }"
-          >Post Preview</router-link
+          >Preview Changes</router-link
         >
       </div>
     </div>
@@ -47,9 +47,9 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import Loading from "../components/Loading.vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import { db, storage } from "../firebase/firebase";
@@ -63,16 +63,27 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
 
     const file = ref(null);
     const blogPhoto = ref(null);
     const loading = ref(false);
     const error = ref(null);
+    const routeID = ref(null);
+    const currentBlog = ref(null);
     const errorMsg = ref(null);
     const editorSettings = ref({
       modules: {
         imageResize: {},
       },
+    });
+
+    onMounted(async () => {
+      routeID.value = route.params.blogid;
+      currentBlog.value = await store.state.blogPosts.filter((post) => {
+        return post.blogID === routeID.value;
+      });
+      store.commit("setBlogState", currentBlog.value[0]);
     });
 
     const profileId = computed(() => {
@@ -132,7 +143,8 @@ export default {
         }
       );
     };
-    const uploadBlog = () => {
+    const updateBlog = async () => {
+      const dataBase = await db.collection("blogPosts").doc(routeID.value);
       if (blogTitle.value.length !== 0 && blogHTML.value.length !== 0) {
         if (file.value) {
           loading.value = true;
@@ -147,23 +159,17 @@ export default {
             },
             (err) => {
               console.log(err);
-              loading.value = false;
+              this.loading = false;
             },
             async () => {
               const downloadURL = await docRef.getDownloadURL();
-              const timestamp = await Date.now();
-              const dataBase = await db.collection("blogPosts").doc();
-
-              await dataBase.set({
-                blogID: dataBase.id,
+              await dataBase.update({
                 blogHTML: blogHTML.value,
                 blogCoverPhoto: downloadURL,
                 blogCoverPhotoName: blogCoverPhotoName.value,
                 blogTitle: blogTitle.value,
-                profileId: profileId.value,
-                date: timestamp,
               });
-              await store.dispatch("getPost");
+              await store.dispatch("updatePost", routeID.value);
               loading.value = false;
               router.push({
                 name: "ViewBlog",
@@ -173,11 +179,14 @@ export default {
           );
           return;
         }
-        error.value = true;
-        errorMsg.value = "Please ensure you uploaded a cover photo!";
-        setTimeout(() => {
-          error.value = false;
-        }, 5000);
+        loading.value = true;
+        await dataBase.update({
+          blogHTML: blogHTML.value,
+          blogTitle: blogTitle.value,
+        });
+        await store.dispatch("updatePost", routeID.value);
+        loading.value = false;
+        router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
         return;
       }
       error.value = true;
@@ -186,12 +195,12 @@ export default {
         error.value = false;
       }, 5000);
     };
-
     return {
       loading,
       error,
       blogPhoto,
       editorSettings,
+      updateBlog,
       errorMsg,
       profileId,
       blogCoverPhotoName,
@@ -201,7 +210,6 @@ export default {
       blogHTML,
       fileChange,
       imageHandler,
-      uploadBlog,
       openPreview,
     };
   },

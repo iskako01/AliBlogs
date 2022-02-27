@@ -3,6 +3,7 @@ import "firebase/compat/auth";
 import "firebase/compat/storage";
 import "firebase/compat/database";
 import "firebase/compat/firestore";
+import "firebase/compat/functions";
 
 firebase.initializeApp({
   apiKey: "AIzaSyAQNVI8n3ouDVViaFPmx7BYOpbTLrSm8hI",
@@ -16,4 +17,5 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const database = firebase.database();
 const storage = firebase.storage();
-export { auth, db, database, storage };
+const functions = firebase.functions();
+export { auth, db, database, storage, functions };

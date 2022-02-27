@@ -12,35 +12,21 @@ export default createStore({
     blogPhotoPreview: null,
     editPost: null,
     user: null,
-    profileAdmin: null,
+    profileAdmin: true,
     profileEmail: null,
     profileFirstName: null,
     profileLastName: null,
     profileUsername: null,
     profileId: null,
     profileInitials: null,
-    sampleBlogCards: [
-      {
-        blogTitle: "Card 1",
-        blogCoverPhoto: "stock-1",
-        blogDate: "May 7,2022",
-      },
-      {
-        blogTitle: "Card 2",
-        blogCoverPhoto: "stock-2",
-        blogDate: "May 7,2022",
-      },
-      {
-        blogTitle: "Card 3",
-        blogCoverPhoto: "stock-3",
-        blogDate: "May 7,2022",
-      },
-      {
-        blogTitle: "Card 4",
-        blogCoverPhoto: "stock-4",
-        blogDate: "May 7,2022",
-      },
-    ],
+  },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+    blogPostsCards(state) {
+      return state.blogPosts.slice(2, 6);
+    },
   },
   mutations: {
     openPhotoPreview(state) {
@@ -54,6 +40,11 @@ export default createStore({
     },
     newBlogPost(state, payload) {
       state.blogHTML = payload;
+    },
+    filterBlogPost(state, payload) {
+      state.blogPosts = state.blogPosts.filter(
+        (post) => post.blogID === payload
+      );
     },
     updateBlogTitle(state, payload) {
       state.blogTitle = payload;
@@ -85,6 +76,12 @@ export default createStore({
         state.profileFirstName.match(/(\b\S)?/g).join("") +
         state.profileLastName.match(/(\b\S)?/g).join("");
     },
+    setBlogState(state, payload) {
+      state.blogTitle = payload.blogTitle;
+      state.blogHTML = payload.blogHTML;
+      state.blogPhotoFileURL = payload.blogCoverPhoto;
+      state.blogPhotoName = payload.blogCoverPhotoName;
+    },
   },
   actions: {
     async getCurrentUser({ commit }) {
@@ -104,21 +101,31 @@ export default createStore({
     },
     async getPost({ state }) {
       const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
+
       const dbResults = await dataBase.get();
+
       dbResults.forEach((doc) => {
-        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
-          const data = {
-            blogID: doc.data().blogID,
-            blogHTML: doc.data().blogHTML,
-            blogCoverPhoto: doc.data().blogCoverPhoto,
-            blogTitle: doc.data().blogTitle,
-            blogDate: doc.data().date,
-            blogCoverPhotoName: doc.data().blogCoverPhotoName,
-          };
-          state.blogPosts.push(data);
-        }
+        const data = {
+          blogID: doc.data().blogID,
+          blogHTML: doc.data().blogHTML,
+          blogCoverPhoto: doc.data().blogCoverPhoto,
+          blogTitle: doc.data().blogTitle,
+          blogDate: doc.data().date,
+          blogCoverPhotoName: doc.data().blogCoverPhotoName,
+        };
+        state.blogPosts.push(data);
       });
       state.postLoaded = true;
+      console.log(state.blogPosts);
+    },
+    async deletePost({ commit }, payload) {
+      const getPost = await db.collection("blogPosts").doc(payload);
+      await getPost.delete();
+      commit("filterBlogPost", payload);
+    },
+    async updatePost({ commit, dispatch }, payload) {
+      commit("filterBlogPost", payload);
+      await dispatch("getPost");
     },
   },
   modules: {},

@@ -21,12 +21,19 @@
 
 <script>
 import { ref } from "vue";
+import { functions } from "../firebase/firebase";
 export default {
   name: "Admin",
   setup() {
     const adminEmail = ref("");
     const functionMsg = ref(null);
-    return { adminEmail, functionMsg };
+
+    const addAdmin = async () => {
+      const addAdmin = await functions.httpsCallable("addAdminRole");
+      const result = await addAdmin({ email: adminEmail.value });
+      functionMsg.value = result.data.message;
+    };
+    return { adminEmail, functionMsg, addAdmin };
   },
 };
 </script>

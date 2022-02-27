@@ -1,11 +1,15 @@
 <template>
-  <Navigation v-if="!routerNavigation" />
-  <router-view />
-  <blogs-footer v-if="!routerNavigation" />
+  <div class="app-wrapper">
+    <div class="app" v-if="postLoaded">
+      <Navigation v-if="!routerNavigation" />
+      <router-view />
+      <blogs-footer v-if="!routerNavigation" />
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { auth } from "./firebase/firebase";
@@ -19,13 +23,9 @@ export default {
     const store = useStore();
     const routerNavigation = ref(null);
 
-    auth.onAuthStateChanged((user) => {
-      store.commit("updateUser", user);
-      if (user) {
-        store.dispatch("getCurrentUser");
-      }
+    const postLoaded = computed(() => {
+      return store.state.postLoaded;
     });
-
     const checkRoute = () => {
       if (
         route.name === "Login" ||
@@ -37,13 +37,23 @@ export default {
       }
       routerNavigation.value = false;
     };
-    checkRoute();
+    const checkAuthStateChanged = () => {
+      auth.onAuthStateChanged((user) => {
+        store.commit("updateUser", user);
+        if (user) {
+          store.dispatch("getCurrentUser", user);
+        }
+      });
+      checkRoute();
+      store.dispatch("getPost");
+    };
+    checkAuthStateChanged();
 
     watch((route) => {
       checkRoute();
     });
 
-    return { routerNavigation };
+    return { routerNavigation, postLoaded };
   },
 };
 </script>
@@ -81,10 +91,6 @@ export default {
 .arrow path {
   fill: #000;
 }
-/* .arrow-light {
-  margin-left: 8px;
-  width: 12px;
-} */
 .arrow-light path {
   fill: #fff;
 }

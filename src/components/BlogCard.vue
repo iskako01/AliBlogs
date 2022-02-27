@@ -1,18 +1,24 @@
 <template>
   <div class="blog-card">
     <div v-show="editPost" class="icons">
-      <div class="icon">
+      <div class="icon" @click="editBlogPost">
         <Edit class="icon" />
       </div>
-      <div class="icon">
+      <div class="icon" @click="deletePost">
         <Delete class="delete" />
       </div>
     </div>
-    <img :srs="`../assets/blogCards/${post.photo}.jpg`" />
+    <img :srs="post.blogCoverPhoto" />
     <div class="info">
       <h4>{{ post.blogTitle }}</h4>
-      <h6>Posted on:{{ post.blogTitle }}</h6>
-      <router-link class="link" to="#"
+      <h6>
+        Posted on:{{
+          new Date(post.blogDate).toLocaleString("en-us", { dateStyle: "long" })
+        }}
+      </h6>
+      <router-link
+        class="link"
+        :to="{ name: 'ViewBlog', params: { blogid: post.blogID } }"
         >View the Post <Arrow class="arrow" />
       </router-link>
     </div>
@@ -22,6 +28,7 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import Arrow from "./svg/Arrow.vue";
 import Edit from "./svg/Edit.vue";
 import Delete from "./svg/Delete.vue";
@@ -32,17 +39,24 @@ export default {
   props: {
     post: {
       type: Object,
-      default: () => {},
     },
   },
-  setup() {
+  setup(props) {
     const store = useStore();
+    const router = useRouter();
 
     const editPost = computed(() => {
       return store.state.editPost;
     });
 
-    return { editPost };
+    const deletePost = () => {
+      store.dispatch("deletePost", props.post.blogID);
+    };
+    const editBlogPost = () => {
+      router.push({ name: "EditBlog", params: { blogid: props.post.blogID } });
+    };
+
+    return { editPost, deletePost, editBlogPost };
   },
 };
 </script>

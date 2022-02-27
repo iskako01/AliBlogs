@@ -1,9 +1,54 @@
 <template>
-  <div class=""></div>
+  <div class="post-view">
+    <div class="container quillWrapper">
+      <h2>{{ blogTitle }}</h2>
+      <img :src="blogCoverPhoto" alt="" />
+      <div class="post-content ql-editor" v-html="blogHTML"></div>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {};
+import { computed } from "vue";
+import { useStore } from "vuex";
+export default {
+  name: "BlockPreview",
+  setup() {
+    const store = useStore();
+
+    const blogTitle = computed(() => {
+      return store.state.blogTitle;
+    });
+    const blogHTML = computed(() => {
+      return store.state.blogHTML;
+    });
+    const blogCoverPhoto = computed(() => {
+      return store.state.blogCoverPhoto;
+    });
+
+    return { blogTitle, blogHTML, blogCoverPhoto };
+  },
+};
 </script>
 
-<style></style>
+<style>
+.post-view {
+  min-height: 100%;
+}
+.container {
+  max-width: 1000px;
+  padding: 60px 25px;
+}
+.ql-editor {
+  padding: 0;
+}
+.post-view h2 {
+  margin-bottom: 16px;
+  font-weight: 300;
+  font-size: 32px;
+}
+.post-view img {
+  width: 100%;
+  margin-bottom: 32px;
+}
+</style>

@@ -1,21 +1,17 @@
 <template>
   <div class="blog-card-wrap">
     <div class="blog-cards container">
-      <div class="toggle-edit">
+      <div class="toggle-edit" v-if="profileAdmin">
         <span>Toggle Editing Post</span>
         <input type="checkbox" v-model="editPost" />
       </div>
-      <blog-card
-        :post="post"
-        v-for="(post, index) in sampleBlogCards"
-        :key="index"
-      />
+      <blog-card :post="post" v-for="(post, index) in blogPosts" :key="index" />
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, watch, onBeforeUnmount } from "vue";
+import { computed, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 
 import BlogCard from "../components/BlogCard.vue";
@@ -23,30 +19,27 @@ export default {
   components: { BlogCard },
   setup() {
     const store = useStore();
-    const editPost = ref(false);
-
-    console.log(editPost.value);
-
-    const sampleBlogCards = computed(() => {
-      return store.state.sampleBlogCards;
+    const editPost = computed({
+      get() {
+        return store.state.editPost;
+      },
+      set(payload) {
+        store.commit("toggleEditPost", payload);
+      },
     });
 
-    const toggleEditPost = () => {
-      store.commit("toggleEditPost", editPost.value);
-    };
-    // const editPost = computed(() => {
-    //   return store.state.editPost;
-    // });
+    const blogPosts = computed(() => {
+      return store.state.blogPosts;
+    });
+    const profileAdmin = computed(() => {
+      return store.state.profileAdmin;
+    });
 
     onBeforeUnmount(() => {
       store.commit("toggleEditPost", false);
     });
 
-    watch(editPost, (currentValue, oldValue) => {
-      toggleEditPost();
-    });
-
-    return { editPost, sampleBlogCards };
+    return { editPost, blogPosts, profileAdmin };
   },
 };
 </script>

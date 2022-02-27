@@ -12,7 +12,7 @@
         <div class="blog-cards">
           <blog-card
             :post="post"
-            v-for="(post, index) in sampleBlogCards"
+            v-for="(post, index) in blogPostsCards"
             :key="index"
           />
         </div>
@@ -50,13 +50,10 @@ export default {
     });
 
     const blogPostsFeed = computed(() => {
-      return store.state;
-    });
-    const sampleBlogCards = computed(() => {
-      return store.state.sampleBlogCards;
+      return store.getters.blogPostsFeed;
     });
     const blogPostsCards = computed(() => {
-      return store.state;
+      return store.getters.blogPostsCards;
     });
     const user = computed(() => {
       return store.state.user;
@@ -66,7 +63,6 @@ export default {
       blogPostsFeed,
       blogPostsCards,
       user,
-      sampleBlogCards,
     };
   },
 };

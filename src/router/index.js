@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { auth } from "../firebase/firebase";
 
 const routes = [
   {
@@ -7,6 +8,7 @@ const routes = [
     component: () => import("../views/Home.vue"),
     meta: {
       title: "Home",
+      requiresAuth: false,
     },
   },
   {
@@ -15,14 +17,16 @@ const routes = [
     component: () => import("../views/Blogs.vue"),
     meta: {
       title: "Blogs",
+      requiresAuth: false,
     },
   },
   {
-    path: "/blogs-view",
-    name: "BlocksView",
-    component: () => import("../views/BlogsView.vue"),
+    path: "/view-blog/:blogid",
+    name: "ViewBlog",
+    component: () => import("../views/ViewBlog.vue"),
     meta: {
-      title: "Blogs View",
+      title: "View Blog",
+      requiresAuth: false,
     },
   },
   {
@@ -31,6 +35,17 @@ const routes = [
     component: () => import("../views/CreatePost.vue"),
     meta: {
       title: "Create Post",
+      requiresAuth: false,
+    },
+  },
+  {
+    path: "/edit-blog/:blogid",
+    name: "EditBlog",
+    component: () => import("../views/EditBlog.vue"),
+    meta: {
+      title: "Edit Blog",
+      requiresAuth: true,
+      requiresAdmin: true,
     },
   },
   {
@@ -39,6 +54,7 @@ const routes = [
     component: () => import("../views/Login.vue"),
     meta: {
       title: "Login",
+      requiresAuth: false,
     },
   },
   {
@@ -47,6 +63,7 @@ const routes = [
     component: () => import("../views/Register.vue"),
     meta: {
       title: "Register",
+      requiresAuth: false,
     },
   },
   {
@@ -55,6 +72,7 @@ const routes = [
     component: () => import("../views/ForgotPassword.vue"),
     meta: {
       title: "Forgot Password",
+      requiresAuth: false,
     },
   },
   {
@@ -63,6 +81,8 @@ const routes = [
     component: () => import("../views/Admin.vue"),
     meta: {
       title: "Admin",
+      requiresAuth: true,
+      requiresAdmin: true,
     },
   },
   {
@@ -71,6 +91,7 @@ const routes = [
     component: () => import("../views/Profile.vue"),
     meta: {
       title: "Profile",
+      requiresAuth: true,
     },
   },
   {
@@ -79,6 +100,8 @@ const routes = [
     component: () => import("../views/BlogPreview.vue"),
     meta: {
       title: "Blog Preview",
+      requiresAuth: true,
+      requiresAdmin: true,
     },
   },
 ];
@@ -93,17 +116,26 @@ router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | AliBlogs`;
   next();
 });
-// Route guard for auth routes
-// router.beforeEach((to, from, next) => {
-//   const user = supabase.auth.user();
-//   if (to.matched.some((res) => res.meta.auth)) {
-//     if (user) {
-//       next();
-//       return;
-//     }
-//     next({ name: "Login" });
-//   }
-//   next();
-// });
+
+router.beforeEach(async (to, from, next) => {
+  const user = auth.currentUser;
+  let admin = null;
+  if (user) {
+    const token = await user.getIdTokenResult();
+    admin = token.claims.admin;
+  }
+  if (to.matched.some((res) => res.meta.requiresAuth)) {
+    if (user) {
+      if (to.matched.some((res) => res.meta.requiresAdmin)) {
+        if (admin) {
+          return next();
+        }
+      }
+      return next({ name: "Home" });
+    }
+    return next({ name: "Home" });
+  }
+  return next();
+});
 
 export default router;
