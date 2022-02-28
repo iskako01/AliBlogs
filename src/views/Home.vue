@@ -74,36 +74,25 @@ export default {
   margin-bottom: 32px;
 }
 
-.updates h2 {
+.updates .container h2 {
   font-weight: 300;
   font-size: 32px;
   max-width: 425px;
   width: 100%;
   text-align: center;
   text-transform: uppercase;
-  @media (min-width: 800px) {
-    text-align: initial;
-    font-size: 40px;
-  }
 }
 .updates .container {
   padding: 100px 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (min-width: 800px) {
-    padding: 125px 25px;
-    flex-direction: row;
-  }
 }
-.router-button {
+.updates .container .router-button {
   display: flex;
   font-size: 14px;
   text-decoration: none;
   cursor: pointer;
-  @media (min-width: 800px) {
-    margin-left: auto;
-  }
 }
 .updates .container h2 {
   font-weight: 300;
@@ -112,9 +101,18 @@ export default {
   width: 100%;
   text-align: center;
   text-transform: uppercase;
-  @media (min-width: 800px) {
+}
+@media (min-width: 800px) {
+  .updates .container h2 {
     text-align: initial;
     font-size: 40px;
+  }
+  .updates .container {
+    padding: 125px 25px;
+    flex-direction: row;
+  }
+  .updates .container .router-button {
+    margin-left: auto;
   }
 }
 </style>

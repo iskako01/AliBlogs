@@ -115,11 +115,8 @@ export default {
   align-self: center;
   margin: 0 auto;
   width: 90%;
-  @media (min-width: 900px) {
-    width: 100%;
-  }
 }
-form {
+.form-wrap form {
   padding: 0 10px;
   position: relative;
   display: flex;
@@ -127,18 +124,12 @@ form {
   justify-content: center;
   align-items: center;
   flex: 1;
-  @media (min-width: 900px) {
-    padding: 0 50px;
-  }
 }
-h2 {
+.form-wrap form h2 {
   text-align: center;
   font-size: 32px;
   color: #303030;
   margin-bottom: 40px;
-  @media (min-width: 900px) {
-    font-size: 40px;
-  }
 }
 .inputs {
   width: 100%;
@@ -178,9 +169,6 @@ h2 {
   width: 60px;
   right: -30px;
   height: 101%;
-  @media (min-width: 900px) {
-    display: initial;
-  }
 }
 .background {
   display: none;
@@ -189,7 +177,21 @@ h2 {
   background-image: url("../assets/background.png");
   width: 100%;
   height: 100%;
-  @media (min-width: 900px) {
+}
+@media (min-width: 900px) {
+  .background {
+    display: initial;
+  }
+  .form-wrap {
+    width: 100%;
+  }
+  .form-wrap form {
+    padding: 0 50px;
+  }
+  .form-wrap form h2 {
+    font-size: 40px;
+  }
+  .form-wrap form .angle {
     display: initial;
   }
 }

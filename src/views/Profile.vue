@@ -153,8 +153,6 @@ h2 {
   background-color: #f2f7f6;
   padding: 8px;
   height: 50px;
-  @media (min-width: 900px) {
-  }
 }
 .input input:focus {
   outline: none;

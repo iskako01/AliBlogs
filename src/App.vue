@@ -120,11 +120,8 @@ button,
   font-size: 15px;
   font-weight: 500;
   background-color: transparent;
-  @media (min-width: 700px) {
-    margin-top: 0;
-    margin-left: auto;
-  }
 }
+
 .button-ghost i {
   margin-left: 8px;
 }
@@ -147,21 +144,36 @@ button,
   position: relative;
   padding: 80px 16px;
   background-color: #f1f1f1;
-  @media (min-width: 500px) {
-    padding: 100px 16px;
-  }
 }
 .blog-card-wrap .blog-cards {
   display: grid;
   gap: 32px;
   grid-template-columns: 1fr;
-  @media (min-width: 500px) {
+}
+
+@media (min-width: 700px) {
+  .button-ghost {
+    margin-top: 0;
+    margin-left: auto;
+  }
+}
+@media (min-width: 500px) {
+  .blog-card-wrap {
+    padding: 100px 16px;
+  }
+}
+@media (min-width: 500px) {
+  .blog-card-wrap .blog-cards {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 900px) {
+}
+@media (min-width: 900px) {
+  .blog-card-wrap .blog-cards {
     grid-template-columns: repeat(3, 1fr);
   }
-  @media (min-width: 1200px) {
+}
+@media (min-width: 1200px) {
+  .blog-card-wrap .blog-cards {
     grid-template-columns: repeat(4, 1fr);
   }
 }

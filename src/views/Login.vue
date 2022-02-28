@@ -76,17 +76,14 @@ export default {
   align-self: center;
   margin: 0 auto;
   width: 90%;
-  @media (min-width: 900px) {
-    width: 100%;
-  }
 }
-.login-register {
+.form-wrap .login-register {
   margin-bottom: 32px;
 }
-.login-register .router-link {
+.form-wrap .login-register .router-link {
   color: #000;
 }
-form {
+.form-wrap form {
   padding: 0 10px;
   position: relative;
   display: flex;
@@ -94,24 +91,18 @@ form {
   justify-content: center;
   align-items: center;
   flex: 1;
-  @media (min-width: 900px) {
-    padding: 0 50px;
-  }
 }
-h2 {
+.form-wrap form h2 {
   text-align: center;
   font-size: 32px;
   color: #303030;
   margin-bottom: 40px;
-  @media (min-width: 900px) {
-    font-size: 40px;
-  }
 }
-.inputs {
+.form-wrap form .inputs {
   width: 100%;
   max-width: 350px;
 }
-.forgot-password {
+.form-wrap form .forgot-password {
   text-decoration: none;
   color: #000;
   cursor: pointer;
@@ -120,33 +111,33 @@ h2 {
   border-bottom: 1px solid transparent;
   transition: 0.5s ease all;
 }
-.forgot-password:hover {
+.form-wrap form .forgot-password:hover {
   border-color: #303030;
 }
-.input {
+.form-wrap form .inputs .input {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 8px;
 }
-.input input {
+.form-wrap form .inputs .input input {
   width: 100%;
   border: none;
   background-color: #f2f7f6;
   padding: 4px 4px 4px 30px;
   height: 50px;
 }
-.input input:focus {
+.form-wrap form .inputs .input input:focus {
   outline: none;
 }
-.icon {
+.form-wrap form .inputs .icon {
   width: 12px;
   position: absolute;
   left: 6px;
 }
 
-.angle {
+.form-wrap form .angle {
   display: none;
   position: absolute;
   background-color: #fff;
@@ -154,9 +145,6 @@ h2 {
   width: 60px;
   right: -30px;
   height: 101%;
-  @media (min-width: 900px) {
-    display: initial;
-  }
 }
 .background {
   display: none;
@@ -165,7 +153,21 @@ h2 {
   background-image: url("../assets/background.png");
   width: 100%;
   height: 100%;
-  @media (min-width: 900px) {
+}
+@media (min-width: 900px) {
+  .background {
+    display: initial;
+  }
+  .form-wrap {
+    width: 100%;
+  }
+  .form-wrap form {
+    padding: 0 50px;
+  }
+  .form-wrap form h2 {
+    font-size: 40px;
+  }
+  .form-wrap form .angle {
     display: initial;
   }
 }

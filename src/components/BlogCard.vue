@@ -8,7 +8,7 @@
         <Delete class="delete" />
       </div>
     </div>
-    <img :srs="post.blogCoverPhoto" />
+    <img :src="post.blogCoverPhoto" />
     <div class="info">
       <h4>{{ post.blogTitle }}</h4>
       <h6>
@@ -77,14 +77,14 @@ export default {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
-.icons {
+.blog-card .icons {
   display: flex;
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 99;
 }
-.icon {
+.blog-card .icons .icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -95,20 +95,20 @@ export default {
   transition: 0.5s ease all;
 }
 
-.icon:hover {
+.blog-card .icons .icon:hover {
   background-color: #303030;
 }
-.icon:hover .edit path {
+.blog-card .icons .icon:hover .edit path {
   fill: #fff;
 }
-.icon:hover .delete path {
+.blog-card .icons .icon:hover .delete path {
   fill: #fff;
 }
-.icon:nth-child(1) {
+.blog-card .icons .icon:nth-child(1) {
   margin-right: 8px;
 }
-.edit,
-.delete {
+.blog-card .icons .icon .edit,
+.blog-card .icons .icon .delete {
   pointer-events: none;
   height: 15px;
   width: auto;
@@ -129,17 +129,17 @@ export default {
   padding: 32px 16px;
   color: #000;
 }
-h4 {
+.info h4 {
   padding-bottom: 8px;
   font-size: 20px;
   font-weight: 300;
 }
-h6 {
+.info h6 {
   font-weight: 400;
   font-size: 12px;
   padding-bottom: 16px;
 }
-.link {
+.info .link {
   display: inline-flex;
   align-items: center;
   margin-top: auto;
@@ -149,10 +149,13 @@ h6 {
   padding-bottom: 4px;
   transition: 0.5s ease-in all;
 }
-.link .arrow {
+.info .link .arrow {
   width: 10px;
 }
-.link:hover {
+.info .link:hover {
   color: rgba(48, 48, 48, 0.8);
+}
+.info .arrow {
+  width: 10px;
 }
 </style>

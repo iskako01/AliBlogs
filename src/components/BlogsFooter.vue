@@ -82,99 +82,114 @@ footer .container {
   display: flex;
   flex-direction: column;
   gap: 32px;
-  @media (min-width: 800px) {
-    flex-direction: row;
-    gap: 0px;
-  }
 }
 footer .container > div {
   display: flex;
   flex: 1;
 }
-.left {
+footer .container .left {
   gap: 32px;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (min-width: 800px) {
-    flex-direction: row;
-    align-items: initial;
-    gap: 0;
-  }
 }
-.header {
+footer .container .header {
   text-align: center;
   font-size: 24px;
   color: #fff;
   margin-bottom: 16px;
   text-decoration: none;
   font-weight: 600;
-  @media (min-width: 800px) {
-    text-align: initial;
-  }
 }
-.header ul {
+footer .container ul {
   gap: 16px;
   list-style: none;
   display: flex;
 }
-.col-1,
-.col-2 {
+footer .container .col-1,
+footer .container .col-2 {
   gap: 32px;
   display: flex;
   flex: 1;
-  @media (min-width: 800px) {
-    gap: 0;
-  }
 }
-.col-1 {
+footer .container .col-1 {
   flex-direction: column;
 }
-.col-1 h2 {
+footer .container .col-1 h2 {
   text-align: center;
-  @media (min-width: 800px) {
-    text-align: initial;
-  }
 }
-.col-1 ul {
+footer .container .col-1 ul {
   margin-top: auto;
 }
-.col-1 ul li {
+footer .container .col-1 ul li {
   display: flex;
   align-items: center;
 }
-.col-1 li .svg-icon {
+footer .container .col-1 li .svg-icon {
   width: 24px;
   height: auto;
   color: #fff;
 }
-.col-2 ul {
+footer .container .col-2 ul {
   height: 100%;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-  @media (min-width: 800px) {
-    flex-direction: column;
-  }
 }
-.col-2 .link {
+footer .container .col-2 ul .link {
   font-size: 16px;
   font-weight: 500;
   color: #fff;
   text-decoration: none;
 }
-.right {
+footer .container .right {
   gap: 32px;
   color: #fff;
   align-items: center;
   flex-direction: column;
-  @media (min-width: 800px) {
-    align-items: flex-end;
+}
+footer .container .right p {
+  margin-top: auto;
+}
+@media (min-width: 800px) {
+  footer .container {
+    flex-direction: row;
+    gap: 0px;
+  }
+}
+@media (min-width: 800px) {
+  footer .container .left {
+    flex-direction: row;
+    align-items: initial;
     gap: 0;
   }
 }
-.right p {
-  margin-top: auto;
+@media (min-width: 800px) {
+  footer .container .header {
+    text-align: initial;
+  }
+}
+@media (min-width: 800px) {
+  footer .container .col-1,
+  footer .container .col-2 {
+    gap: 0;
+  }
+}
+@media (min-width: 800px) {
+  footer .container .col-1 h2 {
+    text-align: initial;
+  }
+}
+@media (min-width: 800px) {
+  footer .container .col-2 ul {
+    flex-direction: column;
+  }
+}
+@media (min-width: 800px) {
+  footer .container .right {
+    align-items: flex-end;
+    gap: 0;
+  }
 }
 </style>

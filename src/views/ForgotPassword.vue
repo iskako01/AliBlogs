@@ -78,7 +78,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .reset-password {
   position: relative;
 }
@@ -97,9 +97,6 @@ p {
   align-self: center;
   margin: 0 auto;
   width: 90%;
-  @media (min-width: 900px) {
-    width: 100%;
-  }
 }
 form {
   padding: 0 10px;
@@ -109,18 +106,12 @@ form {
   justify-content: center;
   align-items: center;
   flex: 1;
-  @media (min-width: 900px) {
-    padding: 0 50px;
-  }
 }
 h2 {
   text-align: center;
   font-size: 32px;
   color: #303030;
   margin-bottom: 40px;
-  @media (min-width: 900px) {
-    font-size: 40px;
-  }
 }
 .inputs {
   width: 100%;
@@ -171,7 +162,18 @@ h2 {
   background-image: url("../assets/background.png");
   width: 100%;
   height: 100%;
-  @media (min-width: 900px) {
+}
+@media (min-width: 900px) {
+  form {
+    padding: 0 50px;
+  }
+  .form-wrap {
+    width: 100%;
+  }
+  h2 {
+    font-size: 40px;
+  }
+  .angle {
     display: initial;
   }
 }

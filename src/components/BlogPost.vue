@@ -20,11 +20,8 @@
         /></router-link>
       </div>
       <div class="blog-photo">
-        <img
-          v-if="post.welcomeScreen"
-          :srs="require(`../assets/blogPhotos/${post.photo}.jpg`)"
-        />
-        <img v-else :srs="post.blogCoverPhoto" />
+        <img v-if="post.welcomeScreen" src="../assets/blogPhotos/coding.jpg" />
+        <img v-else :src="post.blogCoverPhoto" />
       </div>
     </div>
   </div>
@@ -60,11 +57,6 @@ export default {
   flex-direction: column;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  @media (min-width: 700px) {
-    min-height: 650px;
-    max-height: 650px;
-    flex-direction: row;
-  }
 }
 .blog-content {
   display: flex;
@@ -73,28 +65,16 @@ export default {
   align-items: center;
   flex: 4;
   order: 2;
-  @media (min-width: 700px) {
-    order: 1;
-  }
-  @media (min-width: 800px) {
-    flex: 3;
-  }
 }
 .blog-content div {
   max-width: 375px;
   padding: 72px 24px;
-  @media (min-width: 700px) {
-    padding: 0 24px;
-  }
 }
 .blog-content div h2 {
   font-size: 32px;
   font-weight: 300;
   text-transform: uppercase;
   margin-bottom: 24px;
-  @media (min-width: 700px) {
-    font-size: 40px;
-  }
 }
 .blog-content div p {
   font-size: 15px;
@@ -129,14 +109,8 @@ export default {
   flex: 3;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  @media (min-width: 700px) {
-    order: 2;
-  }
-  @media (min-width: 800px) {
-    flex: 4;
-  }
 }
-.blog-photo img {
+img {
   display: block;
   width: 100%;
   height: 100%;
@@ -168,5 +142,42 @@ export default {
 } */
 .arrow-light path {
   fill: #fff;
+}
+@media (min-width: 700px) {
+  .blog-wrapper {
+    min-height: 650px;
+    max-height: 650px;
+    flex-direction: row;
+  }
+}
+@media (min-width: 700px) {
+  .blog-content {
+    order: 1;
+  }
+}
+@media (min-width: 800px) {
+  .blog-content {
+    flex: 3;
+  }
+}
+@media (min-width: 700px) {
+  .blog-content div {
+    padding: 0 24px;
+  }
+}
+@media (min-width: 700px) {
+  .blog-content div h2 {
+    font-size: 40px;
+  }
+}
+@media (min-width: 700px) {
+  .blog-photo {
+    order: 2;
+  }
+}
+@media (min-width: 800px) {
+  .blog-photo {
+    flex: 4;
+  }
 }
 </style>
