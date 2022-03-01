@@ -31,6 +31,7 @@ export default {
     const blogPosts = computed(() => {
       return store.state.blogPosts;
     });
+
     const profileAdmin = computed(() => {
       return store.state.profileAdmin;
     });

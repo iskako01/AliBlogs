@@ -8,7 +8,7 @@
     <div class="container">
       <h2>Account Settings</h2>
       <div class="profile-info">
-        <div class="initials">{{ $store.state.profileInitials }}</div>
+        <div class="initials">{{ profileInitials }}</div>
         <div class="admin-badge">
           <adminIcon class="icon" />
           <span>admin</span>
@@ -35,54 +35,70 @@
   </div>
 </template>
 <script>
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 import Modal from "../components/Modal.vue";
 import AdminIcon from "../components/svg/AdminIcon.vue";
+
 export default {
   name: "Profile",
   components: { Modal, AdminIcon },
-  data() {
-    return {
-      modalMessage: "Changes were saved!",
-      modalActive: null,
+  setup() {
+    const store = useStore();
+
+    const modalMessage = ref("Changes were saved!");
+    const modalActive = ref(null);
+
+    const firstName = computed({
+      get() {
+        return store.state.profileFirstName;
+      },
+      set(payload) {
+        store.commit("changeFirstName", payload);
+      },
+    });
+    const lastName = computed({
+      get() {
+        return store.state.profileLastName;
+      },
+      set(payload) {
+        store.commit("changeLastName", payload);
+      },
+    });
+    const username = computed({
+      get() {
+        return store.state.profileUsername;
+      },
+      set(payload) {
+        store.commit("changeUsername", payload);
+      },
+    });
+    const email = computed(() => {
+      return store.state.profileEmail;
+    });
+    const profileInitials = computed(() => {
+      return store.state.profileInitials;
+    });
+
+    const updateProfile = () => {
+      store.dispatch("updateUserSettings");
+      modalActive.value = !modalActive.value;
     };
-  },
-  methods: {
-    updateProfile() {
-      this.$store.dispatch("updateUserSettings");
-      this.modalActive = !this.modalActive;
-    },
-    closeModal() {
-      this.modalActive = !this.modalActive;
-    },
-  },
-  computed: {
-    firstName: {
-      get() {
-        return this.$store.state.profileFirstName;
-      },
-      set(payload) {
-        this.$store.commit("changeFirstName", payload);
-      },
-    },
-    lastName: {
-      get() {
-        return this.$store.state.profileLastName;
-      },
-      set(payload) {
-        this.$store.commit("changeLastName", payload);
-      },
-    },
-    username: {
-      get() {
-        return this.$store.state.profileUsername;
-      },
-      set(payload) {
-        this.$store.commit("changeUsername", payload);
-      },
-    },
-    email() {
-      return this.$store.state.profileEmail;
-    },
+    const closeModal = () => {
+      modalActive.value = !modalActive.value;
+    };
+
+    return {
+      firstName,
+      lastName,
+      email,
+      profileInitials,
+      username,
+      modalActive,
+      modalMessage,
+      updateProfile,
+      closeModal,
+    };
   },
 };
 </script>

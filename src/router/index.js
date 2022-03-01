@@ -45,7 +45,6 @@ const routes = [
     meta: {
       title: "Edit Blog",
       requiresAuth: true,
-      requiresAdmin: true,
     },
   },
   {
@@ -116,26 +115,37 @@ router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | AliBlogs`;
   next();
 });
-
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
   const user = auth.currentUser;
-  let admin = null;
-  if (user) {
-    const token = await user.getIdTokenResult();
-    admin = token.claims.admin;
-  }
   if (to.matched.some((res) => res.meta.requiresAuth)) {
     if (user) {
-      if (to.matched.some((res) => res.meta.requiresAdmin)) {
-        if (admin) {
-          return next();
-        }
-      }
-      return next({ name: "Home" });
+      next();
+      return;
     }
-    return next({ name: "Home" });
+    next({ name: "Home" });
   }
-  return next();
+  next();
 });
+
+// router.beforeEach(async (to, from, next) => {
+//   const user = auth.currentUser;
+//   let admin = null;
+//   if (user) {
+//     const token = await user.getIdTokenResult();
+//     admin = token.claims.admin;
+//   }
+//   if (to.matched.some((res) => res.meta.requiresAuth)) {
+//     if (user) {
+//       if (to.matched.some((res) => res.meta.requiresAdmin)) {
+//         if (admin) {
+//           return next();
+//         }
+//       }
+//       return next({ name: "Home" });
+//     }
+//     return next({ name: "Home" });
+//   }
+//   return next();
+// });
 
 export default router;

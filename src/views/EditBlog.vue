@@ -36,6 +36,7 @@
           @image-added="imageHandler"
         />
       </div>
+      {{ blogHTML }}
       <div class="blog-actions">
         <button @click="updateBlog">Save Changes</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }"
@@ -159,7 +160,7 @@ export default {
             },
             (err) => {
               console.log(err);
-              this.loading = false;
+              loading.value = false;
             },
             async () => {
               const downloadURL = await docRef.getDownloadURL();

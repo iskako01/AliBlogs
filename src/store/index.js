@@ -43,7 +43,7 @@ export default createStore({
     },
     filterBlogPost(state, payload) {
       state.blogPosts = state.blogPosts.filter(
-        (post) => post.blogID === payload
+        (post) => post.blogID !== payload
       );
     },
     updateBlogTitle(state, payload) {
@@ -101,22 +101,22 @@ export default createStore({
     },
     async getPost({ state }) {
       const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
-
       const dbResults = await dataBase.get();
 
       dbResults.forEach((doc) => {
-        const data = {
-          blogID: doc.data().blogID,
-          blogHTML: doc.data().blogHTML,
-          blogCoverPhoto: doc.data().blogCoverPhoto,
-          blogTitle: doc.data().blogTitle,
-          blogDate: doc.data().date,
-          blogCoverPhotoName: doc.data().blogCoverPhotoName,
-        };
-        state.blogPosts.push(data);
+        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+            blogCoverPhotoName: doc.data().blogCoverPhotoName,
+          };
+          state.blogPosts.push(data);
+        }
       });
       state.postLoaded = true;
-      console.log(state.blogPosts);
     },
     async deletePost({ commit }, payload) {
       const getPost = await db.collection("blogPosts").doc(payload);

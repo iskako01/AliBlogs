@@ -319,4 +319,10 @@ p:nth-child(3) {
 .mobile-nav-leave-to {
   transform: translateX(-250px);
 }
+@media (max-width: 750px) {
+  .profile {
+    top: 0;
+    right: 50%;
+  }
+}
 </style>
