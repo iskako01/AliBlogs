@@ -1,0 +1,13 @@
+Refactor components
+1.BlogCard.vue
+2.BlogCoverCard.vue
+3.BlogPost.vue
+4.BlogFooter.vue
+5.Loading.vue
+6.Modal.vue
+7.Navigation.vue
+
+Refactor views
+1.Admin.vue
+2.BlogPreview.vue
+3.Blogs.vue
