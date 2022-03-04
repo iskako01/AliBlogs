@@ -32,7 +32,7 @@
 
 <script>
 import { ref } from "vue";
-import { auth } from "../firebase/firebase";
+import useForgotPassword from "../requests/useForgotPassword";
 import Email from "../components/svg/Email.vue";
 import Modal from "../components/Modal.vue";
 import Loading from "../components/Loading.vue";
@@ -50,22 +50,13 @@ export default {
       email.value = "";
     };
 
-    const resetPassword = () => {
-      loading.value = true;
-      auth
-        .sendPasswordResetEmail(email.value)
-        .then(() => {
-          modalMessage.value =
-            "If your account exists,you will receive a email.";
-          loading.value = false;
-          modalActive.value = true;
-        })
-        .catch((err) => {
-          modalMessage.value = err.message;
-          loading.value = false;
-          modalActive.value = true;
-        });
-    };
+    const { resetPassword } = useForgotPassword(
+      loading,
+      email,
+      modalMessage,
+      modalActive
+    );
+
     return {
       email,
       modalActive,

@@ -9,12 +9,13 @@
 </template>
 
 <script>
-import { ref, watch, computed } from "vue";
+import { ref, watchEffect, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
-import { auth } from "./firebase/firebase";
+
 import Navigation from "./components/Navigation.vue";
 import BlogsFooter from "./components/BlogsFooter.vue";
+import useAppComponent from "./requests/useAppComponent";
 
 export default {
   components: { Navigation, BlogsFooter },
@@ -37,20 +38,13 @@ export default {
       }
       routerNavigation.value = false;
     };
-    const checkAuthStateChanged = () => {
-      auth.onAuthStateChanged((user) => {
-        store.commit("updateUser", user);
-        if (user) {
-          store.dispatch("getCurrentUser", user);
-        }
-      });
-      checkRoute();
-      store.dispatch("getPost");
-    };
+    const { checkAuthStateChanged } = useAppComponent(store, checkRoute);
     checkAuthStateChanged();
 
-    watch((route) => {
-      checkRoute();
+    watchEffect((route) => {
+      if (route) {
+        checkRoute();
+      }
     });
 
     return { routerNavigation, postLoaded };

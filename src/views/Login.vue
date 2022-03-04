@@ -32,7 +32,7 @@
 
 <script>
 import { ref } from "vue";
-import { auth } from "../firebase/firebase";
+import useLogin from "../requests/useLogin";
 import { useRouter } from "vue-router";
 import Email from "../components/svg/Email.vue";
 import Password from "../components/svg/Password.vue";
@@ -48,19 +48,7 @@ export default {
     const error = ref(false);
     const errorMsg = ref("");
 
-    const signIn = () => {
-      auth
-        .signInWithEmailAndPassword(email.value, password.value)
-        .then(() => {
-          router.push({ name: "Home" });
-          error.value = false;
-          errorMsg.value = "";
-        })
-        .catch((err) => {
-          error.value = true;
-          errorMsg.value = err;
-        });
-    };
+    const { signIn } = useLogin(router, error, errorMsg, email, password);
 
     return { email, password, errorMsg, error, signIn };
   },

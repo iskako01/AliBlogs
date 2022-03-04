@@ -44,8 +44,7 @@ import { useRouter } from "vue-router";
 import Email from "../components/svg/Email.vue";
 import Password from "../components/svg/Password.vue";
 import User from "../components/svg/User.vue";
-
-import { db, auth } from "../firebase/firebase";
+import useRegister from "../requests/useRegister";
 
 export default {
   name: "Register",
@@ -61,36 +60,47 @@ export default {
     const error = ref(false);
     const errorMsg = ref("");
 
-    const register = async () => {
-      if (
-        firstName.value !== "" &&
-        lastName.value !== "" &&
-        username.value !== "" &&
-        email.value !== "" &&
-        password.value !== ""
-      ) {
-        error.value = false;
-        errorMsg.value = "";
+    const { register } = useRegister(
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      error,
+      errorMsg,
+      router
+    );
 
-        // const firebaseAuth = await auth();
-        const createUser = auth.createUserWithEmailAndPassword(
-          email.value,
-          password.value
-        );
-        const result = await createUser;
-        const dataBase = db.collection("users").doc(result.user.uid);
-        await dataBase.set({
-          firstName: firstName.value,
-          lastName: lastName.value,
-          username: username.value,
-          email: email.value,
-        });
-        router.push({ name: "Home" });
-        return;
-      }
-      error.value = true;
-      errorMsg.value = "Please fill out all the fields!";
-    };
+    // const register = async () => {
+    //   if (
+    //     firstName.value !== "" &&
+    //     lastName.value !== "" &&
+    //     username.value !== "" &&
+    //     email.value !== "" &&
+    //     password.value !== ""
+    //   ) {
+    //     error.value = false;
+    //     errorMsg.value = "";
+
+    //     // const firebaseAuth = await auth();
+    //     const createUser = auth.createUserWithEmailAndPassword(
+    //       email.value,
+    //       password.value
+    //     );
+    //     const result = await createUser;
+    //     const dataBase = db.collection("users").doc(result.user.uid);
+    //     await dataBase.set({
+    //       firstName: firstName.value,
+    //       lastName: lastName.value,
+    //       username: username.value,
+    //       email: email.value,
+    //     });
+    //     router.push({ name: "Home" });
+    //     return;
+    //   }
+    //   error.value = true;
+    //   errorMsg.value = "Please fill out all the fields!";
+    // };
 
     return {
       firstName,

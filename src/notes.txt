@@ -11,3 +11,12 @@ Refactor views
 1.Admin.vue
 2.BlogPreview.vue
 3.Blogs.vue
+4.CreatePost.vue
+5.EditBlog.vue
+6.ForgotPassword.vue
+7.Home.vue
+8.Login.vue
+9.Profile.vue
+10.Register.vue
+11.ViewBlog.vue
+12.App.vue
