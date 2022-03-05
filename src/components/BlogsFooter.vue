@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="right">
-        <p>Copyright 2021 All Rights Reserved</p>
+        <p>Copyright 2022 All Rights Reserved</p>
       </div>
     </div>
   </footer>
@@ -75,7 +75,7 @@ export default {
 <style scoped>
 footer {
   margin-top: auto;
-  padding: 100px 25px;
+  padding: 25px 25px;
   background-color: #303030;
 }
 footer .container {

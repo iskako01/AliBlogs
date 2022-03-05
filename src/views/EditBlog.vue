@@ -36,7 +36,6 @@
           @image-added="imageHandler"
         />
       </div>
-      {{ blogHTML }}
       <div class="blog-actions">
         <button @click="updateBlog">Save Changes</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }"

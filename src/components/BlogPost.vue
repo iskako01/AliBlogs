@@ -1,6 +1,10 @@
 <template>
   <div class="blog-wrapper" :class="{ 'no-user': !user }">
     <div class="blog-content">
+      <div class="blog-photo">
+        <img v-if="post.welcomeScreen" src="../assets/blogPhotos/coding.jpg" />
+        <img v-else :src="post.blogCoverPhoto" />
+      </div>
       <div>
         <h2 v-if="post.welcomeScreen">{{ post.title }}</h2>
         <h2 v-else>{{ post.blogTitle }}</h2>
@@ -16,12 +20,8 @@
           class="link"
           v-else
           :to="{ name: 'ViewBlog', params: { blogid: post.blogID } }"
-          >View The Post<Arrow class="arrow"
+          >View The Post<Arrow class="arrow arrow-light"
         /></router-link>
-      </div>
-      <div class="blog-photo">
-        <img v-if="post.welcomeScreen" src="../assets/blogPhotos/coding.jpg" />
-        <img v-else :src="post.blogCoverPhoto" />
       </div>
     </div>
   </div>
@@ -53,28 +53,33 @@ export default {
 
 <style scoped>
 .blog-wrapper {
+  margin: 20px 0 0 0;
+  color: #fff;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06); */
 }
 .blog-content {
+  margin: auto;
+  max-width: 1000px;
   display: flex;
-  flex-direction: column;
+  background-color: #788;
   justify-content: center;
   align-items: center;
   flex: 4;
   order: 2;
 }
 .blog-content div {
-  max-width: 375px;
-  padding: 72px 24px;
+  max-width: 410px;
+  padding: 10px 15px;
 }
 .blog-content div h2 {
   font-size: 32px;
   font-weight: 300;
   text-transform: uppercase;
-  margin-bottom: 24px;
+  margin-bottom: 15px;
 }
 .blog-content div p {
   font-size: 15px;
@@ -90,9 +95,10 @@ export default {
   text-overflow: ellipsis;
 }
 .link {
+  color: #fff;
   display: inline-flex;
   align-items: center;
-  margin-top: 32px;
+  margin-top: 15px;
   padding-bottom: 4px;
   border-bottom: 1px solid transparent;
   transition: 0.5s ease-in all;
@@ -107,7 +113,7 @@ export default {
 .blog-photo {
   order: 1;
   flex: 3;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  box-shadow: 0 4px 6px -1px rgba(248, 245, 245, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 img {
@@ -155,6 +161,11 @@ img {
     order: 1;
   }
 }
+@media (max-width: 550px) {
+  .blog-content {
+    flex-direction: column;
+  }
+}
 @media (min-width: 800px) {
   .blog-content {
     flex: 3;
@@ -162,7 +173,7 @@ img {
 }
 @media (min-width: 700px) {
   .blog-content div {
-    padding: 0 24px;
+    padding: 24px 24px;
   }
 }
 @media (min-width: 700px) {

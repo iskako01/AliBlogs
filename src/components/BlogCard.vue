@@ -124,7 +124,7 @@ export default {
 .info {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 50%;
   z-index: 3;
   padding: 32px 16px;
   color: #000;

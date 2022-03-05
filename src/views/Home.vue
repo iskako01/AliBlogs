@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <blog-post v-if="!user" :post="welcomeScreen" />
+
     <blog-post
       :post="post"
       v-for="(post, index) in blogPostsFeed"
@@ -73,7 +74,10 @@ export default {
   font-size: 28px;
   margin-bottom: 32px;
 }
-
+.background {
+  width: 100%;
+  height: 100px;
+}
 .updates .container h2 {
   font-weight: 300;
   font-size: 32px;
@@ -81,6 +85,11 @@ export default {
   width: 100%;
   text-align: center;
   text-transform: uppercase;
+}
+.updates {
+  background-image: url(../assets/bgHome.jpg);
+  background-size: cover;
+  background-position: center;
 }
 .updates .container {
   padding: 100px 25px;
@@ -95,6 +104,7 @@ export default {
   cursor: pointer;
 }
 .updates .container h2 {
+  color: #fff;
   font-weight: 300;
   font-size: 32px;
   max-width: 425px;
@@ -108,7 +118,7 @@ export default {
     font-size: 40px;
   }
   .updates .container {
-    padding: 125px 25px;
+    padding: 411px 25px;
     flex-direction: row;
   }
   .updates .container .router-button {
