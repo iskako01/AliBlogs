@@ -86,7 +86,7 @@ input[type="checkbox"]:before {
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 input:checked[type="checkbox"]:before {
-  background: #fff;
+  background: #787;
   left: 52px;
 }
 </style>

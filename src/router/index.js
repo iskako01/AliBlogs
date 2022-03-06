@@ -35,7 +35,7 @@ const routes = [
     component: () => import("../views/CreatePost.vue"),
     meta: {
       title: "Create Post",
-      requiresAuth: false,
+      requiresAuth: true,
     },
   },
   {

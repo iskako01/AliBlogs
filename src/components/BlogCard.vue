@@ -2,7 +2,7 @@
   <div class="blog-card">
     <div v-show="editPost" class="icons">
       <div class="icon" @click="editBlogPost">
-        <Edit class="icon" />
+        <Edit class="edit" />
       </div>
       <div class="icon" @click="deletePost">
         <Delete class="delete" />
@@ -88,30 +88,36 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background-color: #fff;
   transition: 0.5s ease all;
 }
 
 .blog-card .icons .icon:hover {
-  background-color: #303030;
+  background-color: #788;
 }
 .blog-card .icons .icon:hover .edit path {
   fill: #fff;
 }
+
 .blog-card .icons .icon:hover .delete path {
   fill: #fff;
 }
 .blog-card .icons .icon:nth-child(1) {
-  margin-right: 8px;
+  margin-right: 15px;
 }
 .blog-card .icons .icon .edit,
 .blog-card .icons .icon .delete {
   pointer-events: none;
-  height: 15px;
-  width: auto;
+  height: 20px;
+  width: 20px;
+}
+.blog-card .icons .icon .edit {
+  pointer-events: none;
+  height: 20px;
+  width: 20px;
 }
 .blog-card img {
   display: block;

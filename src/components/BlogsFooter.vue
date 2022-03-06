@@ -131,6 +131,9 @@ footer .container .col-1 li .svg-icon {
   height: auto;
   color: #fff;
 }
+footer .container .col-1 li .svg-icon:hover {
+  color: #99ffff;
+}
 footer .container .col-2 ul {
   height: 100%;
   justify-content: center;
@@ -142,6 +145,9 @@ footer .container .col-2 ul .link {
   font-weight: 500;
   color: #fff;
   text-decoration: none;
+}
+footer .container .col-2 ul .link:hover {
+  color: #99ffff;
 }
 footer .container .right {
   gap: 32px;

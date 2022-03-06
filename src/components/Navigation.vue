@@ -3,7 +3,7 @@
     <nav class="container">
       <div class="branding">
         <router-link :to="{ name: 'Home' }" class="header"
-          >AliBlogs</router-link
+          ><span>AliBlogs</span></router-link
         >
       </div>
       <div class="nav-links">
@@ -173,6 +173,9 @@ header .link {
 header .link:hover {
   color: #1eb8b8;
 }
+.header {
+  color: #787;
+}
 nav {
   display: flex;
   padding: 25px 0;
@@ -181,6 +184,7 @@ nav {
   display: flex;
   align-items: center;
 }
+
 .branding .header {
   font-weight: 600;
   font-size: 24px;

@@ -19,6 +19,9 @@
         </div>
       </div>
     </div>
+    <div class="background" v-if="user">
+      <img src="../assets/bgHome.jpg" />
+    </div>
     <div v-if="!user" class="updates">
       <div class="container">
         <h2>never miss a post. Register for your free account today!</h2>
@@ -69,14 +72,24 @@ export default {
 };
 </script>
 <style scoped>
+.blog-card-wrap {
+  padding: 30px 16px;
+}
 .blog-card-wrap h3 {
   font-weight: 300;
   font-size: 28px;
   margin-bottom: 32px;
 }
 .background {
+  margin: 0;
+  padding: 0;
   width: 100%;
-  height: 100px;
+  height: 950px;
+}
+.background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .updates .container h2 {
   font-weight: 300;

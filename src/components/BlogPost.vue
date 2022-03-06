@@ -2,7 +2,7 @@
   <div class="blog-wrapper" :class="{ 'no-user': !user }">
     <div class="blog-content">
       <div class="blog-photo">
-        <img v-if="post.welcomeScreen" src="../assets/blogPhotos/coding.jpg" />
+        <img v-if="post.welcomeScreen" src="../assets/welcome.jpg" />
         <img v-else :src="post.blogCoverPhoto" />
       </div>
       <div>
@@ -53,17 +53,19 @@ export default {
 
 <style scoped>
 .blog-wrapper {
-  margin: 20px 0 0 0;
+  padding-bottom: 20px;
   color: #fff;
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #303030;
   /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06); */
 }
 .blog-content {
   margin: auto;
-  max-width: 1000px;
+  max-width: 1224px;
+  height: 600px;
   display: flex;
   background-color: #788;
   justify-content: center;
@@ -73,7 +75,7 @@ export default {
 }
 .blog-content div {
   max-width: 410px;
-  padding: 10px 15px;
+  padding: 10px 10px;
 }
 .blog-content div h2 {
   font-size: 32px;
@@ -142,10 +144,7 @@ img {
 .arrow path {
   fill: #000;
 }
-/* .arrow-light {
-  margin-left: 8px;
-  width: 12px;
-} */
+
 .arrow-light path {
   fill: #fff;
 }

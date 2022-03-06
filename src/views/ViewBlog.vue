@@ -41,6 +41,15 @@ export default {
 </script>
 
 <style>
+.quillWrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.container img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
 .post-view h4 {
   font-weight: 400;
   font-size: 14px;
