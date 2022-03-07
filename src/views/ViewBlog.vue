@@ -16,6 +16,8 @@
         v-html="currentBlog[0].blogHTML"
       ></div>
     </div>
+    <Comments />
+    <new-commen />t>
   </div>
 </template>
 
@@ -23,8 +25,12 @@
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+
+import Comments from "../components/Comments.vue";
+import NewComment from "../components/NewComment.vue";
 export default {
   name: "ViewBlog",
+  components: { Comments, NewComment },
   setup() {
     const store = useStore();
     const route = useRoute();

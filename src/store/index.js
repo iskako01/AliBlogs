@@ -19,6 +19,7 @@ export default createStore({
     profileUsername: null,
     profileId: null,
     profileInitials: null,
+    comments: [],
   },
   getters: {
     blogPostsFeed(state) {

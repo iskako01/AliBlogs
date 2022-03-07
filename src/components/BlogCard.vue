@@ -96,7 +96,7 @@ export default {
 }
 
 .blog-card .icons .icon:hover {
-  background-color: #788;
+  background-color: #d4f5f5;
 }
 .blog-card .icons .icon:hover .edit path {
   fill: #fff;
