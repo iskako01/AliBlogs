@@ -51,16 +51,7 @@ export default function useCreatePost(
             const downloadURL = await docRef.getDownloadURL();
             const timestamp = await Date.now();
             const dataBase = await db.collection("blogPosts").doc();
-            console.log(
-              blogTitle,
-              blogHTML,
-              file,
-              loading,
-              blogCoverPhotoName,
-              error,
-              errorMsg,
-              profileId
-            );
+
             await dataBase.set({
               blogID: dataBase.id,
               blogHTML: blogHTML.value,

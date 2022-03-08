@@ -17,7 +17,7 @@
       ></div>
     </div>
     <Comments />
-    <new-commen />t>
+    <new-comment />t>
   </div>
 </template>
 

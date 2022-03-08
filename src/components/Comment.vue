@@ -15,14 +15,14 @@
 export default {
   name: "Comment",
   props: ["comment"],
-  //   computed: {
-  //     posted_at() {
-  //       return moment(this.comment.created_at).format("MMMM Do YYYY");
-  //     },
-  //     avatar() {
-  //       return `https://api.adorable.io/avatars/48/$ {this.comment.author} @ adorable.io.png`;
-  //     },
-  //   },
+  computed: {
+    posted_at() {
+      return this.comment.created_at;
+    },
+    avatar() {
+      return "";
+    },
+  },
 };
 </script>
 <style scoped>

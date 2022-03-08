@@ -17,20 +17,20 @@ export default {
   name: "Comments",
   components: { Comment },
   mounted() {
-    this.$store.dispatch("GET_COMMENTS");
+    this.$store.dispatch("getComments");
 
-    // use your own credentials you get from Pusher
-    const pusher = new Pusher("YOUR_PUSHER_APP_ID", {
-      cluster: "YOUR_PUSHER_CLUSTER",
-      encrypted: false,
-    });
+    // // use your own credentials you get from Pusher
+    // const pusher = new Pusher("YOUR_PUSHER_APP_ID", {
+    //   cluster: "YOUR_PUSHER_CLUSTER",
+    //   encrypted: false,
+    // });
 
-    // Subscribe to the channel we specified in our Adonis Application
-    const channel = pusher.subscribe("comment-channel");
+    // // Subscribe to the channel we specified in our Adonis Application
+    // const channel = pusher.subscribe("comment-channel");
 
-    channel.bind("new-comment", (data) => {
-      this.$store.commit("ADD_COMMENT", data.comment);
-    });
+    // channel.bind("new-comment", (data) => {
+    //   this.$store.commit("addComment", data.comment);
+    // });
   },
   computed: {
     ...mapGetters(["comments"]),

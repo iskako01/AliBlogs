@@ -28,8 +28,17 @@ export default createStore({
     blogPostsCards(state) {
       return state.blogPosts.slice(2, 6);
     },
+    comments(state) {
+      return state.comments;
+    },
   },
   mutations: {
+    getComments(state, comments) {
+      state.comments = comments;
+    },
+    addComment(state, comment) {
+      state.comments = [...state.comments, comment];
+    },
     openPhotoPreview(state) {
       state.blogPhotoPreview = !state.blogPhotoPreview;
     },
@@ -85,6 +94,22 @@ export default createStore({
     },
   },
   actions: {
+    async addComment({ commit }, comment) {
+      //   const timestamp = await Date.now();
+      const dataBase = await db.collection("comments").doc();
+
+      await dataBase.set({
+        comment: comment,
+      });
+
+      commit("addComment", comment);
+    },
+    async getComments({ commit }) {
+      //   const timestamp = await Date.now();
+      const dataBase = await db.collection("comments").doc();
+
+      commit("getComments", dataBase);
+    },
     async getCurrentUser({ commit }) {
       const dataBase = await db.collection("users").doc(auth.currentUser.uid);
       const dbResult = await dataBase.get();

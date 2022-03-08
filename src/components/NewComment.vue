@@ -30,8 +30,7 @@
         <div class="control has-margin-top">
           <button
             style="background-color: #47b784"
-            :
-            class="{'is-loading': submit}"
+            :class="{ 'is-loading': submit }"
             class="button has-shadow is-medium has-text-white"
             :disabled="!isValid"
             @click.prevent="postComment"
@@ -48,36 +47,37 @@
 
 <script>
 export default {
-       name: "NewComment",
-       data() {
-         return {
-           submit: false,
-           comment: {
-             content: '',
-             author: '',
-           }
-         }
-       },
-       methods: {
-         postComment() {
-           this.submit = true;
-           this.$store.dispatch ('ADD_COMMENT', this.comment)
-             .then (response => {
-               this.submit = false;
-               if (response.data === 'ok')
-                 console.log ('success')
-             }). catch (err => {
-             this.submit = false
-           })
-
-         },
-       },
-       computed: {
-         isValid () {
-           return this.comment.content! == '' && this.comment.author! == ''
-         }
-       }
-     }
+  name: "NewComment",
+  data() {
+    return {
+      submit: false,
+      comment: {
+        content: "",
+        author: "",
+      },
+    };
+  },
+  methods: {
+    postComment() {
+      this.submit = true;
+      this.$store
+        .dispatch("addComment", this.comment)
+        .then((response) => {
+          this.submit = false;
+          if (response.data === "ok") console.log("success");
+        })
+        .catch((err) => {
+          this.submit = false;
+          console.log(err);
+        });
+    },
+  },
+  computed: {
+    isValid() {
+      return this.comment.content !== "" && this.comment.author !== "";
+    },
+  },
+};
 </script>
 
 <style scoped>
