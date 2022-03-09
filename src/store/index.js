@@ -94,21 +94,43 @@ export default createStore({
     },
   },
   actions: {
-    async addComment({ commit }, comment) {
-      //   const timestamp = await Date.now();
+    async addComment({ commit, state }, comment) {
+      const timestamp = await Date.now();
       const dataBase = await db.collection("comments").doc();
+      const dataComment = {
+        comment: comment,
+        date: timestamp,
+        commentID: dataBase.id,
+        firstName: state.profileFirstName,
+        lastName: state.profileLastName,
+        username: state.profileUsername,
+        userEmail: state.profileEmail,
+      };
 
       await dataBase.set({
-        comment: comment,
+        dataComment: dataComment,
       });
 
-      commit("addComment", comment);
+      commit("addComment", dataComment);
     },
-    async getComments({ commit }) {
-      //   const timestamp = await Date.now();
-      const dataBase = await db.collection("comments").doc();
-
-      commit("getComments", dataBase);
+    async getComments({ state }) {
+      //   //   const timestamp = await Date.now();
+      const dataBase = await db.collection("comments").orderBy("date", "desc");
+      const dbResults = await dataBase.get();
+      dbResults.forEach((doc) => {
+        if (!state.comments.some((comment) => comment.commentID === doc.id)) {
+          const data = {
+            comment: doc.data().comment,
+            date: doc.data().timestamp,
+            commentID: doc.data().dataBase.id,
+            firstName: doc.data().profileFirstName,
+            lastName: doc.data().profileLastName,
+            username: doc.data().profileUsername,
+            userEmail: doc.data().profileEmail,
+          };
+          state.comments.push(data);
+        }
+      });
     },
     async getCurrentUser({ commit }) {
       const dataBase = await db.collection("users").doc(auth.currentUser.uid);

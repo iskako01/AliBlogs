@@ -3,17 +3,6 @@
     <form @keyup.enter="postComment">
       <div class="field has-margin-top">
         <div class="field has-margin-top">
-          <label class="label"> Your name </label>
-          <div class="control">
-            <input
-              type="text"
-              placeholder="Your name"
-              class="input is-medium"
-              v-model="comment.author"
-            />
-          </div>
-        </div>
-        <div class="field has-margin-top">
           <label class="label"> Your comment </label>
           <div class="control">
             <textarea
@@ -32,7 +21,6 @@
             style="background-color: #47b784"
             :class="{ 'is-loading': submit }"
             class="button has-shadow is-medium has-text-white"
-            :disabled="!isValid"
             @click.prevent="postComment"
             type="submit"
           >
@@ -41,7 +29,6 @@
         </div>
       </div>
     </form>
-    for
   </div>
 </template>
 
@@ -53,7 +40,6 @@ export default {
       submit: false,
       comment: {
         content: "",
-        author: "",
       },
     };
   },
@@ -61,10 +47,9 @@ export default {
     postComment() {
       this.submit = true;
       this.$store
-        .dispatch("addComment", this.comment)
-        .then((response) => {
+        .dispatch("addComment", this.comment.content)
+        .then(() => {
           this.submit = false;
-          if (response.data === "ok") console.log("success");
         })
         .catch((err) => {
           this.submit = false;
@@ -74,7 +59,7 @@ export default {
   },
   computed: {
     isValid() {
-      return this.comment.content !== "" && this.comment.author !== "";
+      return this.comment.content !== "";
     },
   },
 };
