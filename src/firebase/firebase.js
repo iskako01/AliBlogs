@@ -18,4 +18,5 @@ const db = firebase.firestore();
 const database = firebase.database();
 const storage = firebase.storage();
 const functions = firebase.functions();
+
 export { auth, db, database, storage, functions };

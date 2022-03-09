@@ -1,12 +1,12 @@
 <template>
   <li class="comment-wrapper animate slideInLeft">
-    <div class="profile"><img :src="avatar" alt="" /></div>
+    <div class="profile"><img src="../assets/logo.png" alt="" /></div>
     <div class="msg has-shadow">
       <div class="msg-body">
         <p class="name">
-          {{ comment.author }} <span class="date"> {{ posted_at }} </span>
+          <span class="date"> {{ comment }} </span>
         </p>
-        <p class="content">{{ comment.content }}</p>
+        <p class="content">{{ comment.comment }}</p>
       </div>
     </div>
   </li>
@@ -15,14 +15,7 @@
 export default {
   name: "Comment",
   props: ["comment"],
-  computed: {
-    posted_at() {
-      return this.comment.created_at;
-    },
-    avatar() {
-      return "";
-    },
-  },
+  computed: {},
 };
 </script>
 <style scoped>

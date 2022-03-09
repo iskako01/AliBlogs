@@ -38,6 +38,7 @@ export default createStore({
     },
     addComment(state, comment) {
       state.comments = [...state.comments, comment];
+      console.log(state.comments);
     },
     openPhotoPreview(state) {
       state.blogPhotoPreview = !state.blogPhotoPreview;
@@ -97,7 +98,8 @@ export default createStore({
     async addComment({ commit, state }, comment) {
       const timestamp = await Date.now();
       const dataBase = await db.collection("comments").doc();
-      const dataComment = {
+
+      await dataBase.set({
         comment: comment,
         date: timestamp,
         commentID: dataBase.id,
@@ -105,31 +107,33 @@ export default createStore({
         lastName: state.profileLastName,
         username: state.profileUsername,
         userEmail: state.profileEmail,
-      };
-
-      await dataBase.set({
-        dataComment: dataComment,
       });
 
-      commit("addComment", dataComment);
+      commit("addComment", {
+        comment: comment,
+        date: timestamp,
+        commentID: dataBase.id,
+        firstName: state.profileFirstName,
+        lastName: state.profileLastName,
+        username: state.profileUsername,
+        userEmail: state.profileEmail,
+      });
     },
-    async getComments({ state }) {
-      //   //   const timestamp = await Date.now();
-      const dataBase = await db.collection("comments").orderBy("date", "desc");
+    async getComments({ commit, state }) {
+      const dataBase = await db.collection("comments");
       const dbResults = await dataBase.get();
       dbResults.forEach((doc) => {
-        if (!state.comments.some((comment) => comment.commentID === doc.id)) {
-          const data = {
-            comment: doc.data().comment,
-            date: doc.data().timestamp,
-            commentID: doc.data().dataBase.id,
-            firstName: doc.data().profileFirstName,
-            lastName: doc.data().profileLastName,
-            username: doc.data().profileUsername,
-            userEmail: doc.data().profileEmail,
-          };
-          state.comments.push(data);
-        }
+        const data = {
+          comment: doc.data().comment,
+          date: doc.data().timestamp,
+          commentID: doc.data().commentID,
+          firstName: doc.data().profileFirstName,
+          lastName: doc.data().profileLastName,
+          username: doc.data().profileUsername,
+          userEmail: doc.data().profileEmail,
+        };
+        // commit("getComments", data);
+        state.comments.push(data);
       });
     },
     async getCurrentUser({ commit }) {
@@ -161,6 +165,7 @@ export default createStore({
             blogDate: doc.data().date,
             blogCoverPhotoName: doc.data().blogCoverPhotoName,
           };
+
           state.blogPosts.push(data);
         }
       });
