@@ -35,6 +35,12 @@
 <script>
 export default {
   name: "NewComment",
+  props: {
+    currentBlogID: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       submit: false,
@@ -47,7 +53,10 @@ export default {
     postComment() {
       this.submit = true;
       this.$store
-        .dispatch("addComment", this.comment.content)
+        .dispatch("addComment", {
+          content: this.comment.content,
+          currentBlogID: this.currentBlogID,
+        })
         .then(() => {
           this.submit = false;
         })

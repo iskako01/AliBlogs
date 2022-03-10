@@ -34,7 +34,8 @@ export default createStore({
   },
   mutations: {
     getComments(state, comments) {
-      state.comments = comments;
+      state.comments.push(comments);
+      console.log(state.comments);
     },
     addComment(state, comment) {
       state.comments = [...state.comments, comment];
@@ -95,24 +96,26 @@ export default createStore({
     },
   },
   actions: {
-    async addComment({ commit, state }, comment) {
+    async addComment({ commit, state }, { content, currentBlogID }) {
       const timestamp = await Date.now();
-      const dataBase = await db.collection("comments").doc();
+      const dataBase = await db.collection("comments").doc(currentBlogID);
 
-      await dataBase.set({
-        comment: comment,
+      const commentsData = {
+        comment: content,
         date: timestamp,
-        commentID: dataBase.id,
+        commentID: currentBlogID,
         firstName: state.profileFirstName,
         lastName: state.profileLastName,
         username: state.profileUsername,
         userEmail: state.profileEmail,
-      });
+      };
+
+      await dataBase.set({ commentsData });
 
       commit("addComment", {
-        comment: comment,
+        comment: content,
         date: timestamp,
-        commentID: dataBase.id,
+        commentID: currentBlogID,
         firstName: state.profileFirstName,
         lastName: state.profileLastName,
         username: state.profileUsername,
@@ -125,15 +128,14 @@ export default createStore({
       dbResults.forEach((doc) => {
         const data = {
           comment: doc.data().comment,
-          date: doc.data().timestamp,
+          date: doc.data().date,
           commentID: doc.data().commentID,
-          firstName: doc.data().profileFirstName,
-          lastName: doc.data().profileLastName,
-          username: doc.data().profileUsername,
-          userEmail: doc.data().profileEmail,
+          firstName: doc.data().firstName,
+          lastName: doc.data().lastName,
+          username: doc.data().username,
+          userEmail: doc.data().userEmail,
         };
-        // commit("getComments", data);
-        state.comments.push(data);
+        commit("getComments", data);
       });
     },
     async getCurrentUser({ commit }) {

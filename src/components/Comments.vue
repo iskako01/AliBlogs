@@ -12,30 +12,33 @@
 
 <script>
 import Comment from "./Comment.vue";
+import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "Comments",
   components: { Comment },
-  data() {
-    return {
-      comments: this.$store.state.comments,
-    };
+  props: {
+    currentBlogID: {
+      type: String,
+      default: "",
+    },
   },
-  async mounted() {
-    await this.$store.dispatch("getComments");
+  setup(props) {
+    const store = useStore();
+    const comments = ref([]);
 
-    // // use your own credentials you get from Pusher
-    // const pusher = new Pusher("YOUR_PUSHER_APP_ID", {
-    //   cluster: "YOUR_PUSHER_CLUSTER",
-    //   encrypted: false,
-    // });
+    const currentComments = () => {
+      comments.value = store.getters.comments.filter(
+        (comment) => comment.commentID === props.currentBlogID
+      );
+    };
 
-    // // Subscribe to the channel we specified in our Adonis Application
-    // const channel = pusher.subscribe("comment-channel");
+    onMounted(async () => {
+      await store.dispatch("getComments").then(() => currentComments());
+    });
 
-    // channel.bind("new-comment", (data) => {
-    //   this.$store.commit("addComment", data.comment);
-    // });
+    return { comments };
   },
 };
 </script>

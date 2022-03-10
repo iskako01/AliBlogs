@@ -16,8 +16,8 @@
         v-html="currentBlog[0].blogHTML"
       ></div>
     </div>
-    <Comments />
-    <new-comment />t>
+    <Comments :currentBlogID="currentBlogID" />
+    <new-comment :currentBlogID="currentBlogID" />t>
   </div>
 </template>
 
@@ -35,13 +35,14 @@ export default {
     const store = useStore();
     const route = useRoute();
     const currentBlog = ref(null);
+    const currentBlogID = ref(route.params.blogid);
 
     onMounted(async () => {
       currentBlog.value = await store.state.blogPosts.filter((post) => {
         return post.blogID === route.params.blogid;
       });
     });
-    return { currentBlog };
+    return { currentBlog, currentBlogID };
   },
 };
 </script>
