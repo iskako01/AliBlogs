@@ -28,6 +28,9 @@ export default createStore({
     blogPostsCards(state) {
       return state.blogPosts.slice(2, 6);
     },
+    profileEmail(state) {
+      return state.profileEmail;
+    },
     comments(state) {
       return state.comments;
     },
@@ -98,21 +101,12 @@ export default createStore({
   actions: {
     async addComment({ commit, state }, { content, currentBlogID }) {
       const timestamp = await Date.now();
-      const dataBase = await db.collection("comments").doc(currentBlogID);
+      const dataBase = await db
+        .collection("comments")
+        .doc(currentBlogID)
+        .collection(currentBlogID);
 
-      const commentsData = {
-        comment: content,
-        date: timestamp,
-        commentID: currentBlogID,
-        firstName: state.profileFirstName,
-        lastName: state.profileLastName,
-        username: state.profileUsername,
-        userEmail: state.profileEmail,
-      };
-
-      await dataBase.set({ commentsData });
-
-      commit("addComment", {
+      await dataBase.add({
         comment: content,
         date: timestamp,
         commentID: currentBlogID,
@@ -121,10 +115,25 @@ export default createStore({
         username: state.profileUsername,
         userEmail: state.profileEmail,
       });
+      commit("addComment", {
+        comment: content,
+        date: timestamp,
+        commentID: dataBase.doc(state.profileEmail).id,
+        firstName: state.profileFirstName,
+        lastName: state.profileLastName,
+        username: state.profileUsername,
+        userEmail: state.profileEmail,
+      });
     },
-    async getComments({ commit, state }) {
-      const dataBase = await db.collection("comments");
+    async getComments({ commit, state }, currentBlogID) {
+      const dataBase = await db
+        .collection("comments")
+        .doc(currentBlogID)
+        .collection(currentBlogID);
+      console.log(dataBase);
       const dbResults = await dataBase.get();
+
+      console.log(dbResults);
       dbResults.forEach((doc) => {
         const data = {
           comment: doc.data().comment,

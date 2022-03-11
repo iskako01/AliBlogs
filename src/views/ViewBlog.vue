@@ -16,13 +16,13 @@
         v-html="currentBlog[0].blogHTML"
       ></div>
     </div>
-    <Comments :currentBlogID="currentBlogID" />
+    <Comments :profileEmail="profileEmail" :currentBlogID="currentBlogID" />
     <new-comment :currentBlogID="currentBlogID" />t>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
@@ -37,12 +37,16 @@ export default {
     const currentBlog = ref(null);
     const currentBlogID = ref(route.params.blogid);
 
+    const profileEmail = computed(() => {
+      return store.state.profileEmail;
+    });
+
     onMounted(async () => {
       currentBlog.value = await store.state.blogPosts.filter((post) => {
         return post.blogID === route.params.blogid;
       });
     });
-    return { currentBlog, currentBlogID };
+    return { currentBlog, currentBlogID, profileEmail };
   },
 };
 </script>

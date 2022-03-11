@@ -12,7 +12,7 @@
 
 <script>
 import Comment from "./Comment.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -20,6 +20,10 @@ export default {
   components: { Comment },
   props: {
     currentBlogID: {
+      type: String,
+      default: "",
+    },
+    profileEmail: {
       type: String,
       default: "",
     },
@@ -34,9 +38,9 @@ export default {
       );
     };
 
-    onMounted(async () => {
-      await store.dispatch("getComments").then(() => currentComments());
-    });
+    store
+      .dispatch("getComments", props.currentBlogID)
+      .then(() => currentComments());
 
     return { comments };
   },
