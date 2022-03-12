@@ -1,30 +1,22 @@
 <template>
-  <div id="commentForm" class="box has-shadow has-background-white">
+  <div class="commets">
     <form @keyup.enter="postComment">
-      <div class="field has-margin-top">
-        <div class="field has-margin-top">
-          <label class="label"> Your comment </label>
+      <div class="comments-field">
+        <div class="profile">{{ profileInitials }}</div>
+        <div class="comment-area">
           <div class="control">
             <textarea
-              style="height: 100px"
               name="comment"
-              class="input is-medium"
               autocomplete="true"
-              v-model="comment.content"
-              placeholder="lorem ipsum"
+              v-model="comment"
+              placeholder="Leave a comment"
             >
             </textarea>
           </div>
         </div>
-        <div class="control has-margin-top">
-          <button
-            style="background-color: #47b784"
-            :class="{ 'is-loading': submit }"
-            class="button has-shadow is-medium has-text-white"
-            @click.prevent="postComment"
-            type="submit"
-          >
-            Submit
+        <div class="comment-submit">
+          <button @click.prevent="postComment" type="submit">
+            <Send />
           </button>
         </div>
       </div>
@@ -33,49 +25,79 @@
 </template>
 
 <script>
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import Send from "../components/svg/Send.vue";
+
 export default {
   name: "NewComment",
+  components: { Send },
   props: {
     currentBlogID: {
       type: String,
       default: "",
     },
   },
-  data() {
-    return {
-      submit: false,
-      comment: {
-        content: "",
-      },
+  emits: ["post-comment"],
+  setup(_, { emit }) {
+    const store = useStore();
+    const comment = ref("");
+    const postComment = () => {
+      if (comment.value !== "") {
+        emit("post-comment", comment.value);
+        comment.value = "";
+      }
     };
-  },
-  methods: {
-    postComment() {
-      this.submit = true;
-      this.$store
-        .dispatch("addComment", {
-          content: this.comment.content,
-          currentBlogID: this.currentBlogID,
-        })
-        .then(() => {
-          this.submit = false;
-        })
-        .catch((err) => {
-          this.submit = false;
-          console.log(err);
-        });
-    },
-  },
-  computed: {
-    isValid() {
-      return this.comment.content !== "";
-    },
+
+    const profileInitials = computed(() => {
+      return store.state.profileInitials;
+    });
+
+    return { postComment, profileInitials, comment };
   },
 };
 </script>
 
 <style scoped>
-.has-margin-top {
-  margin-top: 15px;
+.commets {
+  display: blog;
+  padding: 16px;
+  margin: 0 auto;
+  max-width: 1440px;
+}
+.comments-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment-area {
+  display: blog;
+  width: 100%;
+}
+.comment-submit {
+  display: blog;
+  padding-left: 30px;
+}
+textarea {
+  border-radius: 10px;
+  min-height: 41px;
+  max-height: 100%;
+  width: 100%;
+  resize: none;
+}
+button {
+  margin: 0;
+  padding: 7px 20px;
+}
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 41px;
+  height: 41px;
+  border-radius: 10px;
+  color: #fff;
+  background-color: #303030;
+  margin-right: 10px;
 }
 </style>

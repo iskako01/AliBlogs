@@ -1,9 +1,10 @@
 <template>
   <div class="container">
+    <new-comment @post-comment="postComment" />
     <ul class="comment-list">
       <Comment
         v-for="comment in comments"
-        :key="comment.commentID"
+        :key="comment.date"
         :comment="comment"
       />
     </ul>
@@ -12,12 +13,13 @@
 
 <script>
 import Comment from "./Comment.vue";
-import { ref } from "vue";
+import NewComment from "./NewComment.vue";
+import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
   name: "Comments",
-  components: { Comment },
+  components: { Comment, NewComment },
   props: {
     currentBlogID: {
       type: String,
@@ -32,17 +34,31 @@ export default {
     const store = useStore();
     const comments = ref([]);
 
-    const currentComments = () => {
-      comments.value = store.getters.comments.filter(
-        (comment) => comment.commentID === props.currentBlogID
-      );
+    const postComment = async (comment) => {
+      if (comment !== "") {
+        await store.dispatch("addComment", {
+          content: comment,
+          currentBlogID: props.currentBlogID,
+        });
+        store
+          .dispatch("getComments", props.currentBlogID)
+          .then(() => {
+            comments.value = store.state.comments;
+            console.log(comments.value);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     };
 
-    store
-      .dispatch("getComments", props.currentBlogID)
-      .then(() => currentComments());
+    onMounted(async () => {
+      await store
+        .dispatch("getComments", props.currentBlogID)
+        .then(() => (comments.value = store.state.comments));
+    });
 
-    return { comments };
+    return { comments, postComment };
   },
 };
 </script>

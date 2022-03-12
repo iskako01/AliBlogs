@@ -16,8 +16,8 @@
         v-html="currentBlog[0].blogHTML"
       ></div>
     </div>
+    <!-- <new-comment :currentBlogID="currentBlogID" /> -->
     <Comments :profileEmail="profileEmail" :currentBlogID="currentBlogID" />
-    <new-comment :currentBlogID="currentBlogID" />t>
   </div>
 </template>
 
@@ -27,10 +27,10 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 import Comments from "../components/Comments.vue";
-import NewComment from "../components/NewComment.vue";
+// import NewComment from "../components/NewComment.vue";
 export default {
   name: "ViewBlog",
-  components: { Comments, NewComment },
+  components: { Comments },
   setup() {
     const store = useStore();
     const route = useRoute();
@@ -53,7 +53,7 @@ export default {
 
 <style>
 .quillWrapper {
-  max-width: 1000px;
+  max-width: 600px;
   margin: 0 auto;
 }
 .container img {

@@ -1,10 +1,19 @@
 <template>
   <li class="comment-wrapper animate slideInLeft">
-    <div class="profile"><img src="../assets/logo.png" alt="" /></div>
+    <div class="profile">{{ comment.userInitials }}</div>
     <div class="msg has-shadow">
       <div class="msg-body">
+        <div class="commentUserName">
+          {{ comment.firstName }} {{ comment.lastName }}
+        </div>
         <p class="name">
-          <span class="date"> {{ comment }} </span>
+          <span class="date">
+            {{
+              new Date(comment.date).toLocaleString("en-us", {
+                dateStyle: "long",
+              })
+            }}
+          </span>
         </p>
         <p class="content">{{ comment.comment }}</p>
       </div>
@@ -15,10 +24,24 @@
 export default {
   name: "Comment",
   props: ["comment"],
-  computed: {},
+  setup() {
+    return {};
+  },
 };
 </script>
 <style scoped>
+.profile {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #303030;
+}
 .comment-wrapper {
   list-style: none;
   text-align: left;
@@ -27,7 +50,6 @@ export default {
   padding: 0.4em;
 }
 .comment-wrapper .profile {
-  width: 80px;
   float: left;
 }
 

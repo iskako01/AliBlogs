@@ -36,14 +36,15 @@ export default createStore({
     },
   },
   mutations: {
-    getComments(state, comments) {
-      state.comments.push(comments);
+    getComments(state, comments, currentBlogID) {
+      state.comments = [];
+      state.comments = comments;
+      state.comment = state.comments.filter(
+        (comment) => comment.commentID === currentBlogID
+      );
       console.log(state.comments);
     },
-    addComment(state, comment) {
-      state.comments = [...state.comments, comment];
-      console.log(state.comments);
-    },
+
     openPhotoPreview(state) {
       state.blogPhotoPreview = !state.blogPhotoPreview;
     },
@@ -99,7 +100,7 @@ export default createStore({
     },
   },
   actions: {
-    async addComment({ commit, state }, { content, currentBlogID }) {
+    async addComment({ commit, state, dispatch }, { content, currentBlogID }) {
       const timestamp = await Date.now();
       const dataBase = await db
         .collection("comments")
@@ -112,16 +113,7 @@ export default createStore({
         commentID: currentBlogID,
         firstName: state.profileFirstName,
         lastName: state.profileLastName,
-        username: state.profileUsername,
-        userEmail: state.profileEmail,
-      });
-      commit("addComment", {
-        comment: content,
-        date: timestamp,
-        commentID: dataBase.doc(state.profileEmail).id,
-        firstName: state.profileFirstName,
-        lastName: state.profileLastName,
-        username: state.profileUsername,
+        userInitials: state.profileInitials,
         userEmail: state.profileEmail,
       });
     },
@@ -129,23 +121,28 @@ export default createStore({
       const dataBase = await db
         .collection("comments")
         .doc(currentBlogID)
-        .collection(currentBlogID);
+        .collection(currentBlogID)
+        .orderBy("date", "desc");
       console.log(dataBase);
       const dbResults = await dataBase.get();
 
       console.log(dbResults);
+      const commentArray = [];
       dbResults.forEach((doc) => {
-        const data = {
-          comment: doc.data().comment,
-          date: doc.data().date,
-          commentID: doc.data().commentID,
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          username: doc.data().username,
-          userEmail: doc.data().userEmail,
-        };
-        commit("getComments", data);
+        if (!state.comments.some((comment) => comment.commentID === doc.id)) {
+          const data = {
+            comment: doc.data().comment,
+            date: doc.data().date,
+            commentID: doc.data().commentID,
+            firstName: doc.data().firstName,
+            lastName: doc.data().lastName,
+            userEmail: doc.data().userEmail,
+            userInitials: doc.data().userInitials,
+          };
+          commentArray.push(data);
+        }
       });
+      commit("getComments", [...commentArray], currentBlogID);
     },
     async getCurrentUser({ commit }) {
       const dataBase = await db.collection("users").doc(auth.currentUser.uid);
@@ -176,7 +173,6 @@ export default createStore({
             blogDate: doc.data().date,
             blogCoverPhotoName: doc.data().blogCoverPhotoName,
           };
-
           state.blogPosts.push(data);
         }
       });
