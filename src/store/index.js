@@ -20,6 +20,7 @@ export default createStore({
     profileId: null,
     profileInitials: null,
     comments: [],
+    likes: [],
   },
   getters: {
     blogPostsFeed(state) {
@@ -34,6 +35,9 @@ export default createStore({
     comments(state) {
       return state.comments;
     },
+    likes(state) {
+      return state.likes;
+    },
   },
   mutations: {
     getComments(state, comments, currentBlogID) {
@@ -42,7 +46,14 @@ export default createStore({
       state.comment = state.comments.filter(
         (comment) => comment.commentID === currentBlogID
       );
-      console.log(state.comments);
+    },
+    getLikes(state, payload) {
+      state.likes = [];
+      state.likes.push(payload.likeData);
+
+      state.likes = state.likes.filter(
+        (like) => like.likeID === payload.currentBlogID
+      );
     },
 
     openPhotoPreview(state) {
@@ -100,6 +111,43 @@ export default createStore({
     },
   },
   actions: {
+    async addLike({ dispatch, getters }, currentBlogID) {
+      const dataBase = await db.collection("likes").doc(currentBlogID);
+      const countLike = (await dataBase.get(currentBlogID)).data();
+
+      if (getters.likes === 0 && currentBlogID === dataBase.id) {
+        await dataBase.set({
+          like: getters.likes + 1,
+          likeID: currentBlogID,
+        });
+        dispatch("getLikes", currentBlogID);
+      } else {
+        await dataBase.update({
+          like: +countLike.like + 1,
+          likeID: currentBlogID,
+        });
+        dispatch("getLikes", currentBlogID);
+      }
+    },
+    async deleteLike({ dispatch, getters }, currentBlogID) {
+      const dataBase = await db.collection("likes").doc(currentBlogID);
+      const countLike = (await dataBase.get(currentBlogID)).data();
+
+      if (getters.likes === 0 && currentBlogID === dataBase.id) {
+      } else {
+        await dataBase.update({
+          like: +countLike.like - 1,
+          likeID: currentBlogID,
+        });
+        dispatch("getLikes", currentBlogID);
+      }
+    },
+    async getLikes({ commit }, currentBlogID) {
+      const dataBase = await db.collection("likes").doc(currentBlogID);
+      const likeData = (await dataBase.get(currentBlogID)).data();
+
+      commit("getLikes", { likeData, currentBlogID });
+    },
     async addComment({ commit, state, dispatch }, { content, currentBlogID }) {
       const timestamp = await Date.now();
       const dataBase = await db
@@ -123,10 +171,9 @@ export default createStore({
         .doc(currentBlogID)
         .collection(currentBlogID)
         .orderBy("date", "desc");
-      console.log(dataBase);
+
       const dbResults = await dataBase.get();
 
-      console.log(dbResults);
       const commentArray = [];
       dbResults.forEach((doc) => {
         if (!state.comments.some((comment) => comment.commentID === doc.id)) {

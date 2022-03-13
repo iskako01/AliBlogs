@@ -1,5 +1,6 @@
 <template>
   <div class="post-view" v-if="currentBlog">
+    <Likes :currentBlogID="currentBlogID" />
     <div class="container quillWrapper">
       <h2>{{ currentBlog[0].blogTitle }}</h2>
       <h4>
@@ -27,10 +28,10 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 import Comments from "../components/Comments.vue";
-// import NewComment from "../components/NewComment.vue";
+import Likes from "../components/Likes.vue";
 export default {
   name: "ViewBlog",
-  components: { Comments },
+  components: { Comments, Likes },
   setup() {
     const store = useStore();
     const route = useRoute();

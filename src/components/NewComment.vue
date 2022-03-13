@@ -6,6 +6,7 @@
         <div class="comment-area">
           <div class="control">
             <textarea
+              :class="textareaSize"
               name="comment"
               autocomplete="true"
               v-model="comment"
@@ -49,11 +50,15 @@ export default {
       }
     };
 
+    const textareaSize = computed(() => {
+      return comment.value.length >= 300 ? "textareaChange" : "textarea";
+    });
+
     const profileInitials = computed(() => {
       return store.state.profileInitials;
     });
 
-    return { postComment, profileInitials, comment };
+    return { postComment, profileInitials, comment, textareaSize };
   },
 };
 </script>
@@ -78,12 +83,19 @@ export default {
   display: blog;
   padding-left: 30px;
 }
-textarea {
+.textarea {
   border-radius: 10px;
-  min-height: 41px;
-  max-height: 100%;
+  height: 40px;
   width: 100%;
   resize: none;
+  padding: 5px;
+}
+.textareaChange {
+  height: 100px;
+  border-radius: 10px;
+  width: 100%;
+  resize: none;
+  padding: 5px;
 }
 button {
   margin: 0;
