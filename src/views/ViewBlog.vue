@@ -1,6 +1,5 @@
 <template>
   <div class="post-view" v-if="currentBlog">
-    <Likes :currentBlogID="currentBlogID" />
     <div class="container quillWrapper">
       <h2>{{ currentBlog[0].blogTitle }}</h2>
       <h4>
@@ -12,6 +11,10 @@
         }}
       </h4>
       <img :src="currentBlog[0].blogCoverPhoto" alt="" />
+      <div class="likes">
+        <Likes @like-click="likeClick" :likes="likes" />
+      </div>
+
       <div
         class="post-content ql-editor"
         v-html="currentBlog[0].blogHTML"
@@ -37,6 +40,8 @@ export default {
     const route = useRoute();
     const currentBlog = ref(null);
     const currentBlogID = ref(route.params.blogid);
+    const like = ref(false);
+    const likes = ref(0);
 
     const profileEmail = computed(() => {
       return store.state.profileEmail;
@@ -46,8 +51,31 @@ export default {
       currentBlog.value = await store.state.blogPosts.filter((post) => {
         return post.blogID === route.params.blogid;
       });
+      store.dispatch("getLikes", currentBlogID.value).then(() => {
+        if (store.state.likes.length !== 0) {
+          likes.value = store.state.likes[0].like;
+        } else {
+          likes.value = 0;
+        }
+      });
     });
-    return { currentBlog, currentBlogID, profileEmail };
+
+    const likeClick = async () => {
+      if (like.value === false) {
+        like.value = true;
+        await store.dispatch("addLike", currentBlogID.value);
+        await store
+          .dispatch("getLikes", currentBlogID.value)
+          .then(() => (likes.value = store.state.likes[0].like));
+      } else {
+        like.value = false;
+        await store.dispatch("deleteLike", currentBlogID.value);
+        await store
+          .dispatch("getLikes", currentBlogID.value)
+          .then(() => (likes.value = store.state.likes[0].like));
+      }
+    };
+    return { currentBlog, currentBlogID, profileEmail, likeClick, likes };
   },
 };
 </script>
@@ -55,7 +83,15 @@ export default {
 <style>
 .quillWrapper {
   max-width: 600px;
+  height: 100%;
   margin: 0 auto;
+}
+.likes {
+  width: 150px;
+  position: relative;
+  left: 65%;
+  top: -30px;
+  display: block;
 }
 .container img {
   object-fit: cover;

@@ -50,7 +50,7 @@ export default createStore({
     getLikes(state, payload) {
       state.likes = [];
       state.likes.push(payload.likeData);
-
+      console.log(state.likes);
       state.likes = state.likes.filter(
         (like) => like.likeID === payload.currentBlogID
       );
@@ -111,11 +111,11 @@ export default createStore({
     },
   },
   actions: {
-    async addLike({ dispatch, getters }, currentBlogID) {
+    async addLike({ dispatch, getters, state }, currentBlogID) {
       const dataBase = await db.collection("likes").doc(currentBlogID);
-      const countLike = (await dataBase.get(currentBlogID)).data();
-
-      if (getters.likes === 0 && currentBlogID === dataBase.id) {
+      const likeData = (await dataBase.get(currentBlogID)).data();
+      console.log(typeof likeData);
+      if (typeof likeData === "undefined" && currentBlogID === dataBase.id) {
         await dataBase.set({
           like: getters.likes + 1,
           likeID: currentBlogID,
@@ -123,7 +123,7 @@ export default createStore({
         dispatch("getLikes", currentBlogID);
       } else {
         await dataBase.update({
-          like: +countLike.like + 1,
+          like: +likeData.like + 1,
           likeID: currentBlogID,
         });
         dispatch("getLikes", currentBlogID);
@@ -131,22 +131,30 @@ export default createStore({
     },
     async deleteLike({ dispatch, getters }, currentBlogID) {
       const dataBase = await db.collection("likes").doc(currentBlogID);
-      const countLike = (await dataBase.get(currentBlogID)).data();
+      const likeData = (await dataBase.get(currentBlogID)).data();
 
-      if (getters.likes === 0 && currentBlogID === dataBase.id) {
-      } else {
+      if (likeData.like !== 0 && currentBlogID === dataBase.id) {
         await dataBase.update({
-          like: +countLike.like - 1,
+          like: +likeData.like - 1,
           likeID: currentBlogID,
         });
         dispatch("getLikes", currentBlogID);
       }
     },
-    async getLikes({ commit }, currentBlogID) {
+    async getLikes({ commit, state }, currentBlogID) {
       const dataBase = await db.collection("likes").doc(currentBlogID);
       const likeData = (await dataBase.get(currentBlogID)).data();
 
-      commit("getLikes", { likeData, currentBlogID });
+      if (typeof likeData !== "undefined" && currentBlogID === dataBase.id) {
+        console.log(likeData);
+        console.log(dataBase.id);
+        commit("getLikes", { likeData, currentBlogID });
+      } else {
+        await dataBase.set({
+          like: 0,
+          likeID: currentBlogID,
+        });
+      }
     },
     async addComment({ commit, state, dispatch }, { content, currentBlogID }) {
       const timestamp = await Date.now();
