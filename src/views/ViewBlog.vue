@@ -11,7 +11,7 @@
         }}
       </h4>
       <img :src="currentBlog[0].blogCoverPhoto" alt="" />
-      <div class="likes">
+      <div class="likes" v-show="user">
         <Likes @like-click="likeClick" :likes="likes" />
       </div>
 
@@ -41,6 +41,7 @@ export default {
     const currentBlog = ref(null);
     const currentBlogID = ref(route.params.blogid);
     const like = ref(false);
+    const liked = ref(false);
     const likes = ref(0);
 
     const profileEmail = computed(() => {
@@ -51,31 +52,52 @@ export default {
       currentBlog.value = await store.state.blogPosts.filter((post) => {
         return post.blogID === route.params.blogid;
       });
-      store.dispatch("getLikes", currentBlogID.value).then(() => {
-        if (store.state.likes.length !== 0) {
-          likes.value = store.state.likes[0].like;
-        } else {
-          likes.value = 0;
-        }
-      });
+      store
+        .dispatch("getLikes", {
+          currentBlogID: currentBlogID.value,
+          liked: liked.value,
+        })
+        .then(() => {
+          if (store.state.likes.length !== 0) {
+            likes.value = store.state.likes[0].like;
+          } else {
+            likes.value = 0;
+          }
+        });
     });
 
     const likeClick = async () => {
+      //   if (store.state.likes[0].userEmail === store.state.profileEmail) {
       if (like.value === false) {
         like.value = true;
-        await store.dispatch("addLike", currentBlogID.value);
+        liked.value = true;
+        await store.dispatch("addLike", {
+          currentBlogID: currentBlogID.value,
+          liked: liked.value,
+        });
         await store
-          .dispatch("getLikes", currentBlogID.value)
+          .dispatch("getLikes", {
+            currentBlogID: currentBlogID.value,
+            liked: liked.value,
+          })
           .then(() => (likes.value = store.state.likes[0].like));
       } else {
         like.value = false;
         await store.dispatch("deleteLike", currentBlogID.value);
         await store
-          .dispatch("getLikes", currentBlogID.value)
+          .dispatch("getLikes", {
+            currentBlogID: currentBlogID.value,
+            liked: liked.value,
+          })
           .then(() => (likes.value = store.state.likes[0].like));
       }
     };
-    return { currentBlog, currentBlogID, profileEmail, likeClick, likes };
+    // };
+    const user = computed(() => {
+      return store.state.user;
+    });
+
+    return { currentBlog, currentBlogID, profileEmail, likeClick, likes, user };
   },
 };
 </script>
@@ -85,6 +107,7 @@ export default {
   max-width: 600px;
   height: 100%;
   margin: 0 auto;
+  overflow: hidden;
 }
 .likes {
   width: 150px;
@@ -102,5 +125,16 @@ export default {
   font-weight: 400;
   font-size: 14px;
   margin-bottom: 24px;
+}
+@media (max-width: 500px) {
+  .likes {
+    left: 60%;
+    top: -20px;
+  }
+}
+@media (max-width: 400px) {
+  .likes {
+    left: 55%;
+  }
 }
 </style>

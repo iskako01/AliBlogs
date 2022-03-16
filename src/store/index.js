@@ -111,23 +111,51 @@ export default createStore({
     },
   },
   actions: {
-    async addLike({ dispatch, getters, state }, currentBlogID) {
-      const dataBase = await db.collection("likes").doc(currentBlogID);
-      const likeData = (await dataBase.get(currentBlogID)).data();
-      console.log(typeof likeData);
-      if (typeof likeData === "undefined" && currentBlogID === dataBase.id) {
-        await dataBase.set({
-          like: getters.likes + 1,
-          likeID: currentBlogID,
-        });
-        dispatch("getLikes", currentBlogID);
-      } else {
-        await dataBase.update({
-          like: +likeData.like + 1,
-          likeID: currentBlogID,
-        });
-        dispatch("getLikes", currentBlogID);
-      }
+    async addLike({ dispatch, getters, state }, { currentBlogID, liked }) {
+      const dataBase = await db
+        .collection("likes")
+        .doc(currentBlogID)
+        .collection(state.profileEmail)
+        .doc(currentBlogID);
+      dataBase.set({
+        date: Date.now(),
+        likeID: currentBlogID,
+        userEmail: state.profileEmail,
+      });
+      dispatch("getLikes", currentBlogID);
+      //   const likeData = (await dataBase.get(currentBlogID)).data();
+      //   console.log(likeData);
+      //   if (typeof likeData === "undefined" && currentBlogID === dataBase.id) {
+      //     console.log(state.profileEmail);
+      //     await dataBase.set({
+      //       like: getters.likes + 1,
+      //       likeID: currentBlogID,
+      //       userEmail: state.profileEmail,
+      //       liked: liked,
+      //     });
+      //     dispatch("getLikes", { currentBlogID, liked });
+      //   } else {
+      //     console.log(likeData);
+      //     await dataBase.update({
+      //       like: +likeData.like + 1,
+      //       liked: liked,
+      //     });
+      //     dispatch("getLikes", { currentBlogID, liked });
+      //   }
+    },
+    async getLikes({ dispatch, state }, currentBlogID) {
+      const dataBase = await db
+        .collection("likes")
+        .doc(currentBlogID)
+        .collection(state.profileEmail)
+        .orderBy("date", "desc");
+      // .doc(currentBlogID);
+
+      const dataBaseResult = await await dataBase.get();
+      dataBaseResult.forEach((doc) => {
+        console.log(doc.data());
+      });
+      console.log(dataBaseResult);
     },
     async deleteLike({ dispatch, getters }, currentBlogID) {
       const dataBase = await db.collection("likes").doc(currentBlogID);
@@ -136,26 +164,32 @@ export default createStore({
       if (likeData.like !== 0 && currentBlogID === dataBase.id) {
         await dataBase.update({
           like: +likeData.like - 1,
-          likeID: currentBlogID,
         });
         dispatch("getLikes", currentBlogID);
       }
     },
-    async getLikes({ commit, state }, currentBlogID) {
-      const dataBase = await db.collection("likes").doc(currentBlogID);
-      const likeData = (await dataBase.get(currentBlogID)).data();
+    // async getLikes({ commit, state }, { currentBlogID, liked }) {
+    //   const dataBase = await db.collection("likes").doc(currentBlogID);
+    //   const likeData = (await dataBase.get(currentBlogID)).data();
 
-      if (typeof likeData !== "undefined" && currentBlogID === dataBase.id) {
-        console.log(likeData);
-        console.log(dataBase.id);
-        commit("getLikes", { likeData, currentBlogID });
-      } else {
-        await dataBase.set({
-          like: 0,
-          likeID: currentBlogID,
-        });
-      }
-    },
+    //   if (typeof likeData !== "undefined" && currentBlogID === dataBase.id) {
+    //     if (likeData.userEmail !== state.profileEmail) {
+    //       await dataBase.update({
+    //         liked: false,
+    //       });
+    //       commit("getLikes", { likeData, currentBlogID });
+    //     }
+    //     // console.log(likeData);
+    //     commit("getLikes", { likeData, currentBlogID });
+    //   } else {
+    //     await dataBase.set({
+    //       like: 0,
+    //       likeID: currentBlogID,
+    //       userEmail: state.profileEmail,
+    //       liked: liked,
+    //     });
+    //   }
+    // },
     async addComment({ commit, state, dispatch }, { content, currentBlogID }) {
       const timestamp = await Date.now();
       const dataBase = await db

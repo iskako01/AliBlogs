@@ -1,5 +1,5 @@
 <template>
-  <div class="commets">
+  <div class="commets" v-if="user">
     <form @keyup.enter="postComment">
       <div class="comments-field">
         <div class="profile">{{ profileInitials }}</div>
@@ -51,14 +51,17 @@ export default {
     };
 
     const textareaSize = computed(() => {
-      return comment.value.length >= 300 ? "textareaChange" : "textarea";
+      return comment.value.length >= 100 ? "textareaChange" : "textarea";
     });
 
     const profileInitials = computed(() => {
       return store.state.profileInitials;
     });
+    const user = computed(() => {
+      return store.state.user;
+    });
 
-    return { postComment, profileInitials, comment, textareaSize };
+    return { postComment, profileInitials, comment, textareaSize, user };
   },
 };
 </script>

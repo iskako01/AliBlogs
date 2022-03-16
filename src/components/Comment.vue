@@ -48,6 +48,8 @@ export default {
   overflow: hidden;
   margin-bottom: 2em;
   padding: 0.4em;
+  margin: 0 auto;
+  max-width:1000px;
 }
 .comment-wrapper .profile {
   float: left;

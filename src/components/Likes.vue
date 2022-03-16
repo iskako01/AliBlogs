@@ -1,15 +1,14 @@
 <template>
   <div class="likes">
-    <i class="fa fa-heart liked" @click="likeBtn"
+    <i class="fa fa-heart like" @click="likeBtn"
       ><span>{{ likes }}</span></i
     >
   </div>
 </template>
 
 <script>
-// import { ref, onMounted } from "vue";
+// import { computed } from "vue";
 // import { useStore } from "vuex";
-
 export default {
   name: "Like",
   props: ["likes"],
@@ -17,38 +16,16 @@ export default {
   setup(_, { emit }) {
     // const store = useStore();
 
-    // const like = ref(false);
-
-    // const likes = ref(0);
-
-    // onMounted(() => {
-    //   store.dispatch("getLikes", props.currentBlogID).then(() => {
-    //     if (store.state.likes.length !== 0) {
-    //       likes.value = store.state.likes[0].like;
-    //     } else {
-    //       likes.value = 0;
-    //     }
-    //   });
+    // const likesState = computed(() => {
+    //   return store.state.likes;
     // });
+    // const likeColorChange = computed(() => {
+    //   return likesState.value.liked ? "like" : "liked";
+    // });
+
     const likeBtn = () => {
       emit("like-click");
     };
-
-    // const likeBtn = async () => {
-    //   if (like.value === false) {
-    //     like.value = true;
-    //     await store.dispatch("addLike", props.currentBlogID);
-    //     await store
-    //       .dispatch("getLikes", props.currentBlogID)
-    //       .then(() => (likes.value = store.state.likes[0].like));
-    //   } else {
-    //     like.value = false;
-    //     await store.dispatch("deleteLike", props.currentBlogID);
-    //     await store
-    //       .dispatch("getLikes", props.currentBlogID)
-    //       .then(() => (likes.value = store.state.likes[0].like));
-    //   }
-    // };
 
     return { likeBtn };
   },
@@ -56,17 +33,29 @@ export default {
 </script>
 
 <style scoped>
-.liked {
+.like {
   color: #660000;
   font-size: 50px;
   cursor: pointer;
 }
-.liked:hover {
+.liked {
   color: #e60000;
-  font-size: 53px;
+  font-size: 50px;
+  cursor: pointer;
 }
-.liked span {
+.like:hover {
+  color: #e60000;
+}
+span {
   font-size: 20px;
   font-weight: 800;
+}
+@media (max-width: 500px) {
+  .like {
+    font-size: 40px;
+  }
+  .liked {
+    font-size: 40px;
+  }
 }
 </style>
