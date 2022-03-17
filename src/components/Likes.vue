@@ -1,7 +1,7 @@
 <template>
   <div class="likes">
     <i class="fa fa-heart like" @click="likeBtn"
-      ><span>{{ likes }}</span></i
+      ><span>{{ likes.length }}</span></i
     >
   </div>
 </template>

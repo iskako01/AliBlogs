@@ -41,8 +41,8 @@ export default {
     const currentBlog = ref(null);
     const currentBlogID = ref(route.params.blogid);
     const like = ref(false);
-    const liked = ref(false);
-    const likes = ref(0);
+    const likes = ref([]);
+    const countLikes = ref(0);
 
     const profileEmail = computed(() => {
       return store.state.profileEmail;
@@ -55,13 +55,12 @@ export default {
       store
         .dispatch("getLikes", {
           currentBlogID: currentBlogID.value,
-          liked: liked.value,
+          countLikes: countLikes.value,
         })
         .then(() => {
           if (store.state.likes.length !== 0) {
-            likes.value = store.state.likes[0].like;
+            likes.value = store.state.likes;
           } else {
-            likes.value = 0;
           }
         });
     });
@@ -70,26 +69,29 @@ export default {
       //   if (store.state.likes[0].userEmail === store.state.profileEmail) {
       if (like.value === false) {
         like.value = true;
-        liked.value = true;
+
         await store.dispatch("addLike", {
           currentBlogID: currentBlogID.value,
-          liked: liked.value,
+          countLikes: countLikes.value,
         });
-        await store
-          .dispatch("getLikes", {
-            currentBlogID: currentBlogID.value,
-            liked: liked.value,
-          })
-          .then(() => (likes.value = store.state.likes[0].like));
+        // await store
+        //   .dispatch("getLikes", {
+        //     currentBlogID: currentBlogID.value,
+        //     liked: liked.value,
+        //   })
+        //   .then(() => (likes.value = store.state.likes[0].like));
       } else {
         like.value = false;
-        await store.dispatch("deleteLike", currentBlogID.value);
-        await store
-          .dispatch("getLikes", {
-            currentBlogID: currentBlogID.value,
-            liked: liked.value,
-          })
-          .then(() => (likes.value = store.state.likes[0].like));
+        await store.dispatch("deleteLike", {
+          currentBlogID: currentBlogID.value,
+          countLikes: countLikes.value,
+        });
+        // await store
+        //   .dispatch("getLikes", {
+        //     currentBlogID: currentBlogID.value,
+        //     liked: liked.value,
+        //   })
+        //   .then(() => (likes.value = store.state.likes[0].like));
       }
     };
     // };
@@ -97,7 +99,15 @@ export default {
       return store.state.user;
     });
 
-    return { currentBlog, currentBlogID, profileEmail, likeClick, likes, user };
+    return {
+      currentBlog,
+      currentBlogID,
+      profileEmail,
+      likeClick,
+      countLikes,
+      user,
+      likes,
+    };
   },
 };
 </script>
