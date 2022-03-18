@@ -66,35 +66,35 @@ export default {
     });
 
     const likeClick = async () => {
-      //   if (store.state.likes[0].userEmail === store.state.profileEmail) {
-      if (like.value === false) {
+      if (
+        like.value === false &&
+        !likes.value.some((like) => like.userEmail === store.state.profileEmail)
+      ) {
         like.value = true;
-
         await store.dispatch("addLike", {
           currentBlogID: currentBlogID.value,
           countLikes: countLikes.value,
         });
-        // await store
-        //   .dispatch("getLikes", {
-        //     currentBlogID: currentBlogID.value,
-        //     liked: liked.value,
-        //   })
-        //   .then(() => (likes.value = store.state.likes[0].like));
+        await store
+          .dispatch("getLikes", {
+            currentBlogID: currentBlogID.value,
+            countLikes: countLikes.value,
+          })
+          .then(() => (likes.value = store.state.likes));
       } else {
         like.value = false;
         await store.dispatch("deleteLike", {
           currentBlogID: currentBlogID.value,
           countLikes: countLikes.value,
         });
-        // await store
-        //   .dispatch("getLikes", {
-        //     currentBlogID: currentBlogID.value,
-        //     liked: liked.value,
-        //   })
-        //   .then(() => (likes.value = store.state.likes[0].like));
+        await store
+          .dispatch("getLikes", {
+            currentBlogID: currentBlogID.value,
+            countLikes: countLikes.value,
+          })
+          .then(() => (likes.value = store.state.likes));
       }
     };
-    // };
     const user = computed(() => {
       return store.state.user;
     });

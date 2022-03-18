@@ -1,33 +1,35 @@
 <template>
   <div class="likes">
-    <i class="fa fa-heart like" @click="likeBtn"
+    <i class="fa fa-heart" :class="likeColorChange" @click="likeBtn"
       ><span>{{ likes.length }}</span></i
     >
   </div>
 </template>
 
 <script>
-// import { computed } from "vue";
-// import { useStore } from "vuex";
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
   name: "Like",
   props: ["likes"],
   emits: ["like-click"],
-  setup(_, { emit }) {
-    // const store = useStore();
+  setup(props, { emit }) {
+    const store = useStore();
 
-    // const likesState = computed(() => {
-    //   return store.state.likes;
-    // });
-    // const likeColorChange = computed(() => {
-    //   return likesState.value.liked ? "like" : "liked";
-    // });
+    const likesState = computed(() => {
+      return props.likes.some(
+        (like) => like.userEmail === store.state.profileEmail
+      );
+    });
+    const likeColorChange = computed(() => {
+      return likesState.value ? "liked" : "like";
+    });
 
     const likeBtn = () => {
       emit("like-click");
     };
 
-    return { likeBtn };
+    return { likeBtn, likeColorChange };
   },
 };
 </script>
